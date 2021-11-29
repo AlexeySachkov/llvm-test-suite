@@ -5,7 +5,7 @@
 // device images, but at the same time it stated that they contain some kernels.
 // More details can be found in intel/llvm#4927.
 //
-// REQUIRES: linux && (cpu || gpu)
+// REQUIRES: linux,gpu
 // UNSUPPORTED: cuda || hip
 //
 // RUN: %clangxx -fsycl -fPIC -O3 %S/Inputs/complex-lib-sycl.cpp -c -o %t-lib-sycl.o
@@ -30,7 +30,5 @@
 // RUN: %clangxx -fsycl %t-test.o %t-lib-o.so -o %t-o.run
 //
 // FIXME: is there better way to handle libraries loading than LD_PRELOAD?
-// RUN: %CPU_RUN_PLACEHOLDER LD_PRELOAD=%t-lib-a.so %t-a.run
-// RUN: %CPU_RUN_PLACEHOLDER LD_PRELOAD=%t-lib-o.so %t-o.run
 // RUN: %GPU_RUN_PLACEHOLDER LD_PRELOAD=%t-lib-a.so %t-a.run
 // RUN: %GPU_RUN_PLACEHOLDER LD_PRELOAD=%t-lib-o.so %t-o.run

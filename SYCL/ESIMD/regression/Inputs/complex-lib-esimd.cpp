@@ -3,8 +3,8 @@
 
 static constexpr const int VL = 4;
 
-sycl::event add(size_t n, sycl::buffer<double, 1> &buf_a,
-                sycl::buffer<double, 1> &buf_b, sycl::buffer<double, 1> &buf_c,
+sycl::event add(size_t n, sycl::buffer<int, 1> &buf_a,
+                sycl::buffer<int, 1> &buf_b, sycl::buffer<int, 1> &buf_c,
                 sycl::queue &Q) {
   auto E = Q.submit([&](sycl::handler &H) {
     sycl::accessor acc_a{buf_a, H, sycl::read_only};
@@ -13,12 +13,12 @@ sycl::event add(size_t n, sycl::buffer<double, 1> &buf_a,
 
     H.parallel_for(n, [=](sycl::id<1> i) SYCL_ESIMD_KERNEL {
       using namespace sycl::ext::intel::experimental::esimd;
-      unsigned int offset = i * VL * sizeof(float);
-      simd<float, VL> va;
+      unsigned int offset = i * VL * sizeof(int);
+      simd<int, VL> va;
       va.copy_from(acc_a, offset);
-      simd<float, VL> vb;
+      simd<int, VL> vb;
       vb.copy_from(acc_b, offset);
-      simd<float, VL> vc = va + vb;
+      simd<int, VL> vc = va + vb;
       vc.copy_to(acc_c, offset);
     });
   });
