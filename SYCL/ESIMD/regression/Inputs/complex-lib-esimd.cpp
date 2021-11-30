@@ -14,10 +14,8 @@ sycl::event add(size_t n, sycl::buffer<int, 1> &buf_a,
     H.parallel_for(n, [=](sycl::id<1> i) SYCL_ESIMD_KERNEL {
       using namespace sycl::ext::intel::experimental::esimd;
       unsigned int offset = i * VL * sizeof(int);
-      simd<int, VL> va;
-      va.copy_from(acc_a, offset);
-      simd<int, VL> vb;
-      vb.copy_from(acc_b, offset);
+      simd<int, VL> va(acc_a, offset);
+      simd<int, VL> vb(acc_b, offset);
       simd<int, VL> vc = va + vb;
       vc.copy_to(acc_c, offset);
     });
