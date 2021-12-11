@@ -12,9 +12,9 @@
 // CHECK: float 3.140000e+00, 3.140000E+00
 // CHECK: double -6.813800e+00, -6.813800E+00
 // CHECK: mixed 3.140000e+00, -6.813800E+00
-// CHECK: float 0x1.91eb86p{{0*}}+1, 0X1.91EB86P{{0*}}+1
+// CHECK: float 0x1.91eb86{{0*}}p+1, 0X1.91EB86{{0*}}P+1
 // CHECK: double -0x1.b4154d8cccccdp+2, -0X1.B4154D8CCCCCDP+2
-// CHECK: mixed 0x1.91eb86p{{0*}}+1, -0X1.B4154D8CCCCCDP+2
+// CHECK: mixed 0x1.91eb86{{0*}}p+1, -0X1.B4154D8CCCCCDP+2
 // CHECK: float 3.14, 3.14
 // CHECK: double -6.8138, -6.8138
 // CHECK: mixed 3.14, -6.8138
