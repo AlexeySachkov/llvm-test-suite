@@ -6,8 +6,9 @@
 //
 // RUN: %clangxx -fsycl %s -o %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out %CPU_CHECK_PLACEHOLDER
-// RUN: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.out %ACC_CHECK_PLACEHOLDER
+// FIXME: Enable on GPU once wchar_t* specification is supported there
+// RUNx: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
 //
 // CHECK: c=a
 // CHECK: literal strings: s=Hello ls=World!
