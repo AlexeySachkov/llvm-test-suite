@@ -33,45 +33,45 @@ void do_d_i_test() { // %d, %i signed integer, decimal representation
   size_t zd = LONG_LONG_VALUE;
   ptrdiff_t td = LONG_LONG_VALUE;
 
-  FORMAT_STRING(fmt1) = "%%d positive values:\n"
-                        "\t%%hhd=%hhd\n"
-                        "\t%%hd=%hd\n"
-                        "\t%%d=%d\n"
-                        "\t%%ld=%ld\n"
-                        "\t%%lld=%lld\n"
-                        "\t%%jd=%jd\n"
-                        "\t%%zd=%zd\n"
-                        "\t%%t=%td\n";
+  FORMAT_STRING(fmt1) = "Decimal positive values:\n"
+                        "\tsigned char: %hhd\n"
+                        "\tshort: %hd\n"
+                        "\tint: %d\n"
+                        "\tlong int: %ld\n"
+                        "\tlong long int: %lld\n"
+                        "\tintmax_t: %jd\n"
+                        "\tsigned size_t: %zd\n"
+                        "\tptrdiff_t: %td\n";
   ext::oneapi::experimental::printf(fmt1, hhd, hd, d, ld, lld, jd, zd, td);
-  // CHECK: %d positive values:
-  // CHECK-NEXT: %hhd=123
-  // CHECK-NEXT: %hd=12345
-  // CHECK-NEXT: %d=1234567891
-  // CHECK-NEXT: %ld=1234567891
-  // CHECK-NEXT: %lld=1234567891011121314
-  // CHECK-NEXT: %jd=1234567891011121314
-  // CHECK-NEXT: %zd=1234567891011121314
-  // CHECK-NEXT: %t=1234567891011121314
+  // CHECK: Decimal positive values:
+  // CHECK-NEXT: signed char: 123
+  // CHECK-NEXT: short: 12345
+  // CHECK-NEXT: int: 1234567891
+  // CHECK-NEXT: long int: 1234567891
+  // CHECK-NEXT: long long int: 1234567891011121314
+  // CHECK-NEXT: intmax_t: 1234567891011121314
+  // CHECK-NEXT: signed size_t: 1234567891011121314
+  // CHECK-NEXT: ptrdiff_t: 1234567891011121314
 
-  FORMAT_STRING(fmt2) = "%%i positive values:\n"
-                        "\t%%hhi=%hhi\n"
-                        "\t%%hi=%hi\n"
-                        "\t%%i=%i\n"
-                        "\t%%li=%li\n"
-                        "\t%%lli=%lli\n"
-                        "\t%%ji=%ji\n"
-                        "\t%%zi=%zi\n"
-                        "\t%%ti=%ti\n";
+  FORMAT_STRING(fmt2) = "Integer positive values:\n"
+                        "\tsigned char: %hhi\n"
+                        "\tshort: %hi\n"
+                        "\tint: %i\n"
+                        "\tlong int: %li\n"
+                        "\tlong long int: %lli\n"
+                        "\tintmax_t: %ji\n"
+                        "\tsigned size_t: %zi\n"
+                        "\tptrdiff_t: %ti\n";
   ext::oneapi::experimental::printf(fmt2, hhd, hd, d, ld, lld, jd, zd, td);
-  // CHECK: %i positive values:
-  // CHECK-NEXT: %hhi=123
-  // CHECK-NEXT: %hi=12345
-  // CHECK-NEXT: %i=1234567891
-  // CHECK-NEXT: %li=1234567891
-  // CHECK-NEXT: %lli=1234567891011121314
-  // CHECK-NEXT: %ji=1234567891011121314
-  // CHECK-NEXT: %zi=1234567891011121314
-  // CHECK-NEXT: %ti=1234567891011121314
+  // CHECK: Integer positive values:
+  // CHECK-NEXT: signed char: 123
+  // CHECK-NEXT: short: 12345
+  // CHECK-NEXT: int: 1234567891
+  // CHECK-NEXT: long int: 1234567891
+  // CHECK-NEXT: long long int: 1234567891011121314
+  // CHECK-NEXT: intmax_t: 1234567891011121314
+  // CHECK-NEXT: signed size_t: 1234567891011121314
+  // CHECK-NEXT: ptrdiff_t: 1234567891011121314
 
   hhd = -hhd;
   hd = -hd;
@@ -82,45 +82,45 @@ void do_d_i_test() { // %d, %i signed integer, decimal representation
   zd = -zd;
   td = -td;
 
-  FORMAT_STRING(fmt3) = "%%d negative values:\n"
-                        "\t%%hhd=%hhd\n"
-                        "\t%%hd=%hd\n"
-                        "\t%%d=%d\n"
-                        "\t%%ld=%ld\n"
-                        "\t%%lld=%lld\n"
-                        "\t%%jd=%jd\n"
-                        "\t%%zd=%zd\n"
-                        "\t%%t=%td\n";
+  FORMAT_STRING(fmt3) = "Decimal negative values:\n"
+                        "\tsigned char: %hhd\n"
+                        "\tshort: %hd\n"
+                        "\tint: %d\n"
+                        "\tlong int: %ld\n"
+                        "\tlong long int: %lld\n"
+                        "\tintmax_t: %jd\n"
+                        "\tsigned size_t: %zd\n"
+                        "\tptrdiff_t: %td\n";
   ext::oneapi::experimental::printf(fmt3, hhd, hd, d, ld, lld, jd, zd, td);
-  // CHECK: %d negative values:
-  // CHECK-NEXT: %hhd=-123
-  // CHECK-NEXT: %hd=-12345
-  // CHECK-NEXT: %d=-1234567891
-  // CHECK-NEXT: %ld=-1234567891
-  // CHECK-NEXT: %lld=-1234567891011121314
-  // CHECK-NEXT: %jd=-1234567891011121314
-  // CHECK-NEXT: %zd=-1234567891011121314
-  // CHECK-NEXT: %t=-1234567891011121314
+  // CHECK: Decimal negative values:
+  // CHECK-NEXT: signed char: -123
+  // CHECK-NEXT: short: -12345
+  // CHECK-NEXT: int: -1234567891
+  // CHECK-NEXT: long int: -1234567891
+  // CHECK-NEXT: long long int: -1234567891011121314
+  // CHECK-NEXT: intmax_t: -1234567891011121314
+  // CHECK-NEXT: signed size_t: -1234567891011121314
+  // CHECK-NEXT: ptrdiff_t: -1234567891011121314
 
-  FORMAT_STRING(fmt4) = "%%i negative values:\n"
-                        "\t%%hhi=%hhi\n"
-                        "\t%%hi=%hi\n"
-                        "\t%%i=%i\n"
-                        "\t%%li=%li\n"
-                        "\t%%lli=%lli\n"
-                        "\t%%ji=%ji\n"
-                        "\t%%zi=%zi\n"
-                        "\t%%ti=%ti\n";
+  FORMAT_STRING(fmt4) = "Integer negative values:\n"
+                        "\tsigned char: %hhi\n"
+                        "\tshort: %hi\n"
+                        "\tint: %i\n"
+                        "\tlong int: %li\n"
+                        "\tlong long int: %lli\n"
+                        "\tintmax_t: %ji\n"
+                        "\tsigned size_t: %zi\n"
+                        "\tptrdiff_t: %ti\n";
   ext::oneapi::experimental::printf(fmt4, hhd, hd, d, ld, lld, jd, zd, td);
-  // CHECK: %i negative values:
-  // CHECK-NEXT: %hhi=-123
-  // CHECK-NEXT: %hi=-12345
-  // CHECK-NEXT: %i=-1234567891
-  // CHECK-NEXT: %li=-1234567891
-  // CHECK-NEXT: %lli=-1234567891011121314
-  // CHECK-NEXT: %ji=-1234567891011121314
-  // CHECK-NEXT: %zi=-1234567891011121314
-  // CHECK-NEXT: %ti=-1234567891011121314
+  // CHECK: Integer negative values:
+  // CHECK-NEXT: signed char: -123
+  // CHECK-NEXT: short: -12345
+  // CHECK-NEXT: int: -1234567891
+  // CHECK-NEXT: long int: -1234567891
+  // CHECK-NEXT: long long int: -1234567891011121314
+  // CHECK-NEXT: intmax_t: -1234567891011121314
+  // CHECK-NEXT: signed size_t: -1234567891011121314
+  // CHECK-NEXT: ptrdiff_t: -1234567891011121314
 }
 
 void do_o_test() { // %o unsigned integer, octal representation
@@ -140,25 +140,25 @@ void do_o_test() { // %o unsigned integer, octal representation
   size_t zo = LONG_LONG_VALUE;
   ptrdiff_t to = LONG_LONG_VALUE;
 
-  FORMAT_STRING(fmt1) = "%%o:\n"
-                        "\t%%hho=%hho\n"
-                        "\t%%ho=%ho\n"
-                        "\t%%o=%o\n"
-                        "\t%%lo=%lo\n"
-                        "\t%%llo=%llo\n"
-                        "\t%%jo=%jo\n"
-                        "\t%%zo=%zo\n"
-                        "\t%%to=%to\n";
+  FORMAT_STRING(fmt1) = "Octal:\n"
+                        "\tunsigned char: %hho\n"
+                        "\tunsigned short: %ho\n"
+                        "\tunsigned int: %o\n"
+                        "\tunsigned long: %lo\n"
+                        "\tunsigned long long: %llo\n"
+                        "\tuintmax_t: %jo\n"
+                        "\tsize_t: %zo\n"
+                        "\tptrdiff_t (unsigned version): %to\n";
   ext::oneapi::experimental::printf(fmt1, hho, ho, o, lo, llo, jo, zo, to);
-  // CHECK: %o:
-  // CHECK-NEXT: %hho=123
-  // CHECK-NEXT: %ho=123456
-  // CHECK-NEXT: %o=12345670123
-  // CHECK-NEXT: %lo=12345670123
-  // CHECK-NEXT: %llo=1234567012345670123456
-  // CHECK-NEXT: %jo=1234567012345670123456
-  // CHECK-NEXT: %zo=1234567012345670123456
-  // CHECK-NEXT: %to=1234567012345670123456
+  // CHECK: Octal:
+  // CHECK-NEXT: unsigned char: 123
+  // CHECK-NEXT: unsigned short: 123456
+  // CHECK-NEXT: unsigned int: 12345670123
+  // CHECK-NEXT: unsigned long: 12345670123
+  // CHECK-NEXT: unsigned long long: 1234567012345670123456
+  // CHECK-NEXT: uintmax_t: 1234567012345670123456
+  // CHECK-NEXT: size_t: 1234567012345670123456
+  // CHECK-NEXT: ptrdiff_t (unsigned version): 1234567012345670123456
 }
 
 void do_x_test() { // %x, %X unsigned integer, hexadecimal representation
@@ -178,45 +178,45 @@ void do_x_test() { // %x, %X unsigned integer, hexadecimal representation
   size_t zx = LONG_LONG_VALUE;
   ptrdiff_t tx = LONG_LONG_VALUE;
 
-  FORMAT_STRING(fmt1) = "%%x:\n"
-                        "\t%%hhx=%hhx\n"
-                        "\t%%hx=%hx\n"
-                        "\t%%x=%x\n"
-                        "\t%%lx=%lx\n"
-                        "\t%%llx=%llx\n"
-                        "\t%%jx=%jx\n"
-                        "\t%%zx=%zx\n"
-                        "\t%%tx=%tx\n";
+  FORMAT_STRING(fmt1) = "Hexadecimal:\n"
+                        "\tunsigned char: %hhx\n"
+                        "\tunsigned short: %hx\n"
+                        "\tunsigned int: %x\n"
+                        "\tunsigned long: %lx\n"
+                        "\tunsigned long long: %llx\n"
+                        "\tuintmax_t: %jx\n"
+                        "\tsize_t: %zx\n"
+                        "\tptrdiff_t: %tx\n";
   ext::oneapi::experimental::printf(fmt1, hhx, hx, x, lx, llx, jx, zx, tx);
-  // CHECK: %x:
-  // CHECK-NEXT: %hhx=12
-  // CHECK-NEXT: %hx=1234
-  // CHECK-NEXT: %x=12345678
-  // CHECK-NEXT: %lx=12345678
-  // CHECK-NEXT: %llx=123456789abcdef0
-  // CHECK-NEXT: %jx=123456789abcdef0
-  // CHECK-NEXT: %zx=123456789abcdef0
-  // CHECK-NEXT: %tx=123456789abcdef0
+  // CHECK: Hexadecimal:
+  // CHECK-NEXT: unsigned char: 12
+  // CHECK-NEXT: unsigned short: 1234
+  // CHECK-NEXT: unsigned int: 12345678
+  // CHECK-NEXT: unsigned long: 12345678
+  // CHECK-NEXT: unsigned long long: 123456789abcdef0
+  // CHECK-NEXT: uintmax_t: 123456789abcdef0
+  // CHECK-NEXT: size_t: 123456789abcdef0
+  // CHECK-NEXT: ptrdiff_t: 123456789abcdef0
 
-  FORMAT_STRING(fmt2) = "%%X:\n"
-                        "\t%%hhX=%hhX\n"
-                        "\t%%hX=%hX\n"
-                        "\t%%X=%X\n"
-                        "\t%%lX=%lX\n"
-                        "\t%%llX=%llX\n"
-                        "\t%%jX=%jX\n"
-                        "\t%%zX=%zX\n"
-                        "\t%%tX=%tX\n";
+  FORMAT_STRING(fmt2) = "Hexadecimal (capital letters):\n"
+                        "\tunsigned char: %hhX\n"
+                        "\tunsigned short: %hX\n"
+                        "\tunsigned int: %X\n"
+                        "\tunsigned long int: %lX\n"
+                        "\tunsigned long long int: %llX\n"
+                        "\tuintmax_t: %jX\n"
+                        "\tsize_t: %zX\n"
+                        "\tptrdiff_t: %tX\n";
   ext::oneapi::experimental::printf(fmt2, hhx, hx, x, lx, llx, jx, zx, tx);
-  // CHECK: %X:
-  // CHECK-NEXT: %hhX=12
-  // CHECK-NEXT: %hX=1234
-  // CHECK-NEXT: %X=12345678
-  // CHECK-NEXT: %lX=12345678
-  // CHECK-NEXT: %llX=123456789ABCDEF0
-  // CHECK-NEXT: %jX=123456789ABCDEF0
-  // CHECK-NEXT: %zX=123456789ABCDEF0
-  // CHECK-NEXT: %tX=123456789ABCDEF0
+  // CHECK: Hexadecimal (capital letters):
+  // CHECK-NEXT: unsigned char: 12
+  // CHECK-NEXT: unsigned short: 1234
+  // CHECK-NEXT: unsigned int: 12345678
+  // CHECK-NEXT: unsigned long int: 12345678
+  // CHECK-NEXT: unsigned long long int: 123456789ABCDEF0
+  // CHECK-NEXT: uintmax_t: 123456789ABCDEF0
+  // CHECK-NEXT: size_t: 123456789ABCDEF0
+  // CHECK-NEXT: ptrdiff_t: 123456789ABCDEF0
 }
 
 void do_u_test() { // %u unsigned integer, decimal representation
@@ -237,25 +237,25 @@ void do_u_test() { // %u unsigned integer, decimal representation
   size_t zu = LONG_LONG_VALUE;
   ptrdiff_t tu = LONG_LONG_VALUE;
 
-  FORMAT_STRING(fmt1) = "%%u:\n"
-                        "\t%%hhu=%hhu\n"
-                        "\t%%hu=%hu\n"
-                        "\t%%u=%u\n"
-                        "\t%%lu=%lu\n"
-                        "\t%%llu=%llu\n"
-                        "\t%%ju=%ju\n"
-                        "\t%%zu=%zu\n"
-                        "\t%%tu=%tu\n";
+  FORMAT_STRING(fmt1) = "Unsigned decimal:\n"
+                        "\tunsigned char: %hhu\n"
+                        "\tunsigned short: %hu\n"
+                        "\tunsigned int: %u\n"
+                        "\tunsigned long int: %lu\n"
+                        "\tunsigned long long int: %llu\n"
+                        "\tuintmax_t: %ju\n"
+                        "\tsize_t: %zu\n"
+                        "\tptrdiff_t: %tu\n";
   ext::oneapi::experimental::printf(fmt1, hhu, hu, u, lu, llu, ju, zu, tu);
-  // CHECK: %u:
-  // CHECK-NEXT: %hhu=123
-  // CHECK-NEXT: %hu=12345
-  // CHECK-NEXT: %u=1234567891
-  // CHECK-NEXT: %lu=1234567891
-  // CHECK-NEXT: %llu=1234567891011121314
-  // CHECK-NEXT: %ju=1234567891011121314
-  // CHECK-NEXT: %zu=1234567891011121314
-  // CHECK-NEXT: %tu=1234567891011121314
+  // CHECK: Unsigned decimal:
+  // CHECK-NEXT: unsigned char: 123
+  // CHECK-NEXT: unsigned short: 12345
+  // CHECK-NEXT: unsigned int: 1234567891
+  // CHECK-NEXT: unsigned long int: 1234567891
+  // CHECK-NEXT: unsigned long long int: 1234567891011121314
+  // CHECK-NEXT: uintmax_t: 1234567891011121314
+  // CHECK-NEXT: size_t: 1234567891011121314
+  // CHECK-NEXT: ptrdiff_t: 1234567891011121314
 }
 
 class IntTest;

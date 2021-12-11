@@ -9,13 +9,13 @@
 // RUN: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.out %ACC_CHECK_PLACEHOLDER
 //
-// CHECK: float %e=3.140000e+00, %E=3.140000E+00
-// CHECK: double %e=-6.813800e+00, %E=-6.813800E+00
-// CHECK: mixed %e=3.140000e+00, %E=-6.813800E+00
-// CHECK: float %a=0x1.91eb86p+1, %A=0X1.91EB86P+1
-// CHECK: double %a=-0x1.b4154d8cccccdp+2, %A=-0X1.B4154D8CCCCCDP+2
-// CHECK: float %g=3.14, %G=3.14
-// CHECK: double %g=-6.8138, %G=-6.8138
+// CHECK: float 3.140000e+00, 3.140000E+00
+// CHECK: double -6.813800e+00, -6.813800E+00
+// CHECK: mixed 3.140000e+00, -6.813800E+00
+// CHECK: float 0x1.91eb86p+1, 0X1.91EB86P+1
+// CHECK: double -0x1.b4154d8cccccdp+2, -0X1.B4154D8CCCCCDP+2
+// CHECK: float 3.14, 3.14
+// CHECK: double -6.8138, -6.8138
 
 #include <CL/sycl.hpp>
 
@@ -26,9 +26,9 @@ using namespace sycl;
 void do_float_test() {
   {
     // %e, %E floating-point, decimal exponent notation
-    FORMAT_STRING(fmt1) = "float %%e=%e, %%E=%E\n";
-    FORMAT_STRING(fmt2) = "double %%e=%e, %%E=%E\n";
-    FORMAT_STRING(fmt3) = "mixed %%e=%e, %%E=%E\n";
+    FORMAT_STRING(fmt1) = "float %e, %E\n";
+    FORMAT_STRING(fmt2) = "double %e, %E\n";
+    FORMAT_STRING(fmt3) = "mixed %e, %E\n";
 
     float f = 3.14;
     double d = -f * 2.17;
@@ -39,9 +39,9 @@ void do_float_test() {
 
   {
     // %a, %A floating-point, hexadecimal exponent notation
-    FORMAT_STRING(fmt1) = "float %%a=%a, %%A=%A\n";
-    FORMAT_STRING(fmt2) = "double %%a=%a, %%A=%A\n";
-    FORMAT_STRING(fmt3) = "mixed %%a=%a, %%A=%A\n";
+    FORMAT_STRING(fmt1) = "float %a, %A\n";
+    FORMAT_STRING(fmt2) = "double %a, %A\n";
+    FORMAT_STRING(fmt3) = "mixed %a, %A\n";
 
     float f = 3.14;
     double d = -f * 2.17;
@@ -52,9 +52,9 @@ void do_float_test() {
 
   {
     // %g, %G floating-point
-    FORMAT_STRING(fmt1) = "float %%g=%g, %%G=%G\n";
-    FORMAT_STRING(fmt2) = "double %%g=%g, %%G=%G\n";
-    FORMAT_STRING(fmt3) = "mixed %%g=%g, %%G=%G\n";
+    FORMAT_STRING(fmt1) = "float %g, %G\n";
+    FORMAT_STRING(fmt2) = "double %g, %G\n";
+    FORMAT_STRING(fmt3) = "mixed %g, %G\n";
 
     float f = 3.14;
     double d = -f * 2.17;
