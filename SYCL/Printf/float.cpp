@@ -8,6 +8,13 @@
 // RUN: %CPU_RUN_PLACEHOLDER %t.out %CPU_CHECK_PLACEHOLDER
 // RUN: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.out %ACC_CHECK_PLACEHOLDER
+// FIXME: Remove dedicated constant address space testing once generic AS
+//        support is considered stable.
+// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple %s -o %t.constant.out \
+// RUN: -DTEST_CONSTANT_AS
+// RUN: %CPU_RUN_PLACEHOLDER %t.constant.out %CPU_CHECK_PLACEHOLDER
+// RUN: %GPU_RUN_PLACEHOLDER %t.constant.out %GPU_CHECK_PLACEHOLDER
+// RUN: %ACC_RUN_PLACEHOLDER %t.constant.out %ACC_CHECK_PLACEHOLDER
 //
 // CHECK: float 3.140000e+00, 3.140000E+00
 // CHECK: double -6.813800e+00, -6.813800E+00
