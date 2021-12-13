@@ -13,6 +13,8 @@
 // RUN: -DTEST_CONSTANT_AS
 // RUN: %CPU_RUN_PLACEHOLDER %t.constant.out %CPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.constant.out %ACC_CHECK_PLACEHOLDER
+// CHECK: Constant addrspace literal
+// CHECK: Generic addrspace literal
 
 #include <CL/sycl.hpp>
 
