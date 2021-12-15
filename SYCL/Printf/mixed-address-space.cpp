@@ -18,14 +18,17 @@
 
 #include <CL/sycl.hpp>
 
+#include "helper.hpp"
+
 #include <cstring>
 
 using namespace sycl;
 
 void test() {
   {
-    static const __attribute__((opencl_constant)) char constant_literal[] =
-        "Constant addrspace literal\n";
+#define TEST_CONSTANT_AS
+    FORMAT_STRING(constant_literal) = "Constant addrspace literal\n";
+#undef TEST_CONSTANT_AS
     ext::oneapi::experimental::printf(constant_literal);
     ext::oneapi::experimental::printf("Generic addrspace literal\n");
   }
