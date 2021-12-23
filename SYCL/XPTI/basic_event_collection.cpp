@@ -36,6 +36,7 @@ int main() {
 
 #endif
 
+// CHECK: xptiTraceInit: Stream Name = sycl.experimental.mem_alloc
 // CHECK: xptiTraceInit: Stream Name = sycl
 // CHECK-NEXT: Graph create
 // CHECK-NEXT: xptiTraceInit: Stream Name = sycl.pi
