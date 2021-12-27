@@ -20,7 +20,7 @@
 // FIXME: String literal prefixes (L, u8, u, U) are not functioning on Windows
 //
 // CHECK: c=a
-// CHECK: literal strings: s=Hello ls=World!
+// CHECK: literal strings: s=Hello World!
 // CHECK_DISABLED: non-literal strings: s=Hello, World! ls=
 
 #include <CL/sycl.hpp>
