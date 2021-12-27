@@ -6,21 +6,22 @@
 //
 // RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple %s -o %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out %CPU_CHECK_PLACEHOLDER
+// RUN: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.out %ACC_CHECK_PLACEHOLDER
 // FIXME: Remove dedicated constant address space testing once generic AS
 //        support is considered stable.
 // RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple %s -o %t.constant.out \
 // RUN: -DTEST_CONSTANT_AS
 // RUN: %CPU_RUN_PLACEHOLDER %t.constant.out %CPU_CHECK_PLACEHOLDER
+// RUN: %GPU_RUN_PLACEHOLDER %t.constant.out %GPU_CHECK_PLACEHOLDER
 // RUN: %ACC_RUN_PLACEHOLDER %t.constant.out %ACC_CHECK_PLACEHOLDER
 //
-// FIXME: Enable on GPU once wchar_t* specification is supported there
-// RUNx: %GPU_RUN_PLACEHOLDER %t.out %GPU_CHECK_PLACEHOLDER
-// RUNx: %GPU_RUN_PLACEHOLDER %t.constant.out %GPU_CHECK_PLACEHOLDER
+// FIXME: wchar_t* is not supported on GPU
+// FIXME: String literal prefixes (L, u8, u, U) are not functioning on Windows
 //
 // CHECK: c=a
 // CHECK: literal strings: s=Hello ls=World!
-// CHECK_DISBABLED: non-literal strings: s=Hello, World! ls=
+// CHECK_DISABLED: non-literal strings: s=Hello, World! ls=
 
 #include <CL/sycl.hpp>
 
@@ -42,10 +43,10 @@ void do_char_string_test() {
 
   {
     // %s format specifier, character string
-    FORMAT_STRING(fmt1) = "literal strings: s=%s ls=%ls\n";
+    FORMAT_STRING(fmt1) = "literal strings: s=%s %s\n";
     ext::oneapi::experimental::printf(fmt1, "Hello",
                                       // World!
-                                      L"\x57\x6F\x72\x6C\x64\x21");
+                                      "\x57\x6F\x72\x6C\x64\x21");
 
     // FIXME: lack of support for non-literal strings in %s is an OpenCL
     // limitation
