@@ -19,18 +19,20 @@ int main() {
   sycl::queue q;
 
   int storage;
-  sycl::buffer buf(&storage, sycl::range<1>(1));
   int storage2;
-  sycl::buffer buf2(&storage2, sycl::range<1>(1));
+  {
+    sycl::buffer buf(&storage, sycl::range<1>(1));
+    sycl::buffer buf2(&storage2, sycl::range<1>(1));
 
-  q.submit([&](sycl::handler &h) {
-    auto acc = buf.get_access(h);
-    auto acc2 = buf2.get_access(h);
-    h.single_task([=]() {
-      (void)acc; // unused
-      acc2[0] = THE_ANSWER;
+    q.submit([&](sycl::handler &h) {
+      auto acc = buf.get_access(h);
+      auto acc2 = buf2.get_access(h);
+      h.single_task([=]() {
+        (void)acc; // unused
+        acc2[0] = THE_ANSWER;
+      });
     });
-  });
+  }
 
   return storage2 != THE_ANSWER;
 }
