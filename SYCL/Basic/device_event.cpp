@@ -2,8 +2,6 @@
 // RUN: %GPU_RUN_PLACEHOLDER %t.run
 // RUN: %CPU_RUN_PLACEHOLDER %t.run
 // RUN: %ACC_RUN_PLACEHOLDER %t.run
-// TODO: nd_item::barrier() is not implemented on HOST
-// RUNx: %HOST_RUN_PLACEHOLDER %t.run
 //
 // Returns error "Barrier is not supported on the host device
 // yet." with Nvidia.
