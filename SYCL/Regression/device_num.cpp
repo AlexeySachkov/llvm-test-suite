@@ -19,12 +19,10 @@ using namespace std;
 const std::map<info::device_type, std::string> DeviceTypeStringMap = {
     {info::device_type::cpu, "cpu"},
     {info::device_type::gpu, "gpu"},
-    {info::device_type::host, "host"},
     {info::device_type::accelerator, "acc"}};
 
 const std::map<backend, std::string> BackendStringMap = {
     {backend::opencl, "opencl"},
-    {backend::host, "host"},
     {backend::ext_oneapi_level_zero, "ext_oneapi_level_zero"},
     {backend::ext_intel_esimd_emulator, "ext_intel_esimd_emulator"},
     {backend::ext_oneapi_cuda, "ext_oneapi_cuda"},
@@ -108,12 +106,10 @@ int GetPreferredDeviceIndex(const std::vector<device> &devices,
   //   gpu L0, opencl
   //   cpu
   //   acc
-  //   host
   const std::map<info::device_type, int> scoreByType = {
       {info::device_type::cpu, 300},
       {info::device_type::gpu, 500},
-      {info::device_type::accelerator, 75},
-      {info::device_type::host, 100}};
+      {info::device_type::accelerator, 75}};
   int score = -1;
   int index = -1;
   int devCount = devices.size();
@@ -212,17 +208,6 @@ int main() {
     printDeviceType(d);
     assert(devices[targetDevIndex] == d &&
            "The selected device is not the target device specified.");
-  }
-  targetDevIndex = GetPreferredDeviceIndex(devices, info::device_type::host);
-  assert((targetDevIndex >= 0 || deviceNum != 0) &&
-         "Failed to find host device.");
-  if (targetDevIndex >= 0) {
-    host_selector hs;
-    device d = hs.select_device();
-    std::cout << "host_selector selected ";
-    printDeviceType(d);
-    assert(devices[targetDevIndex] == d &&
-           "The selected device is not a host device.");
   }
 
   return 0;

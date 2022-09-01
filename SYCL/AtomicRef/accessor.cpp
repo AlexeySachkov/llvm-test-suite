@@ -100,9 +100,6 @@ int main() {
   queue q;
   constexpr int N = 32;
   accessor_test<int>(q, N);
-  // TODO: Enable local accessor test for host when barrier is supported
-  if (!q.get_device().is_host()) {
-    local_accessor_test<int>(q, N);
-  }
+  local_accessor_test<int>(q, N);
   std::cout << "Test passed." << std::endl;
 }

@@ -238,7 +238,7 @@ int main() {
   constexpr_verify_div();
 
   device dev{default_selector()};
-  if (!dev.is_host() && !dev.has(sycl::aspect::fp16)) {
+  if (!dev.has(sycl::aspect::fp16)) {
     std::cout << "This device doesn't support the extension cl_khr_fp16"
               << std::endl;
     return 0;
@@ -259,10 +259,6 @@ int main() {
   verify_div(q, a, b, r, 2.5);
   verify_vec(q);
   verify_numeric_limits(q);
-
-  if (!dev.is_host()) {
-    return 0;
-  }
 
   // Basic tests: fp32->fp16
   // The following references are from `_cvtss_sh` with truncate mode.

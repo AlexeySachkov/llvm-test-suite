@@ -1,5 +1,4 @@
 // RUN: %clangxx -D__SYCL_INTERNAL_API -fsycl -fsycl-targets=%sycl_triple %s -o %t.out
-// RUN: %HOST_RUN_PLACEHOLDER %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // RUN: %ACC_RUN_PLACEHOLDER %t.out
@@ -44,13 +43,11 @@ int main() {
         auto acc = buf.get_access<sycl::access::mode::read_write>(cgh);
         cgh.single_task<class SingleTask>(krn, [=]() { acc[0] = acc[0] + 1; });
       });
-      if (!q.is_host()) {
-        const std::string integrationHeaderKernelName =
-            sycl::detail::KernelInfo<SingleTask>::getName();
-        const std::string clKerneName =
-            krn.get_info<sycl::info::kernel::function_name>();
-        assert(integrationHeaderKernelName == clKerneName);
-      }
+      const std::string integrationHeaderKernelName =
+          sycl::detail::KernelInfo<SingleTask>::getName();
+      const std::string clKerneName =
+          krn.get_info<sycl::info::kernel::function_name>();
+      assert(integrationHeaderKernelName == clKerneName);
     }
     assert(data == 1);
   }
@@ -94,45 +91,42 @@ int main() {
     std::iota(dataVec.begin(), dataVec.end(), 0);
 
     // Precompiled kernel invocation
-    // TODO run on host as well once local barrier is supported
-    if (!q.is_host()) {
-      {
-        sycl::range<1> numOfItems(dataVec.size());
-        sycl::range<1> localRange(2);
-        sycl::buffer<int, 1> buf(dataVec.data(), numOfItems);
-        sycl::program prg(q.get_context());
-        assert(prg.get_state() == sycl::program_state::none);
-        prg.build_with_kernel_type<class ParallelForND>();
-        assert(prg.get_state() == sycl::program_state::linked);
-        assert(prg.has_kernel<class ParallelForND>());
-        sycl::kernel krn = prg.get_kernel<class ParallelForND>();
-        assert(krn.get_context() == q.get_context());
-        assert(krn.get_program() == prg);
+    {
+      sycl::range<1> numOfItems(dataVec.size());
+      sycl::range<1> localRange(2);
+      sycl::buffer<int, 1> buf(dataVec.data(), numOfItems);
+      sycl::program prg(q.get_context());
+      assert(prg.get_state() == sycl::program_state::none);
+      prg.build_with_kernel_type<class ParallelForND>();
+      assert(prg.get_state() == sycl::program_state::linked);
+      assert(prg.has_kernel<class ParallelForND>());
+      sycl::kernel krn = prg.get_kernel<class ParallelForND>();
+      assert(krn.get_context() == q.get_context());
+      assert(krn.get_program() == prg);
 
-        q.submit([&](sycl::handler &cgh) {
-          auto acc = buf.get_access<sycl::access::mode::read_write>(cgh);
-          sycl::accessor<int, 1, sycl::access::mode::read_write,
-                         sycl::access::target::local>
-              localAcc(localRange, cgh);
+      q.submit([&](sycl::handler &cgh) {
+        auto acc = buf.get_access<sycl::access::mode::read_write>(cgh);
+        sycl::accessor<int, 1, sycl::access::mode::read_write,
+                       sycl::access::target::local>
+            localAcc(localRange, cgh);
 
-          cgh.parallel_for<class ParallelForND>(
-              krn, sycl::nd_range<1>(numOfItems, localRange),
-              [=](sycl::nd_item<1> item) {
-                size_t idx = item.get_global_linear_id();
-                int pos = idx & 1;
-                int opp = pos ^ 1;
-                localAcc[pos] = acc[item.get_global_linear_id()];
+        cgh.parallel_for<class ParallelForND>(
+            krn, sycl::nd_range<1>(numOfItems, localRange),
+            [=](sycl::nd_item<1> item) {
+              size_t idx = item.get_global_linear_id();
+              int pos = idx & 1;
+              int opp = pos ^ 1;
+              localAcc[pos] = acc[item.get_global_linear_id()];
 
-                item.barrier(sycl::access::fence_space::local_space);
+              item.barrier(sycl::access::fence_space::local_space);
 
-                acc[idx] = localAcc[opp];
-              });
-        });
-      }
-      q.wait();
-      for (size_t i = 0; i < dataVec.size(); ++i) {
-        assert(dataVec[i] == (i ^ 1));
-      }
+              acc[idx] = localAcc[opp];
+            });
+      });
+    }
+    q.wait();
+    for (size_t i = 0; i < dataVec.size(); ++i) {
+      assert(dataVec[i] == (i ^ 1));
     }
   }
 }

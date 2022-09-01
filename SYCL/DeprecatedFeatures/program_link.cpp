@@ -25,9 +25,6 @@ public:
 int main(void) {
   default_selector s;
   platform p(s);
-  if (p.is_host()) {
-    return 0;
-  }
   context c(p);
   queue Q(c, s);
   program prog1(c);

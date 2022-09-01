@@ -1,5 +1,5 @@
 // RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple -D__SYCL_INTERNAL_API %s -o %t.out
-// RUN: env SYCL_DEVICE_FILTER=host,%sycl_be %t.out
+// RUN: env SYCL_DEVICE_FILTER=%sycl_be %t.out
 //==--------------- platform.cpp - SYCL platform test ----------------------==//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -19,9 +19,9 @@ int main() {
   std::vector<platform> openclPlatforms;
   for (const auto &plt : platform::get_platforms()) {
     std::cout << "Platform " << i++
-              << " is available: " << ((plt.is_host()) ? "host: " : "OpenCL: ")
+              << " is available: OpenCL: "
               << std::hex
-              << ((plt.is_host() || plt.get_backend() != sycl::backend::opencl)
+              << ((plt.get_backend() != sycl::backend::opencl)
                       ? nullptr
                       : plt.get())
               << std::endl;
@@ -36,9 +36,7 @@ int main() {
     size_t hash = std::hash<platform>()(Platform);
     platform MovedPlatform(std::move(Platform));
     assert(hash == std::hash<platform>()(MovedPlatform));
-    assert(platformA.is_host() == MovedPlatform.is_host());
-    if (!platformA.is_host() &&
-        platformA.get_backend() == sycl::backend::opencl) {
+    if (platformA.get_backend() == sycl::backend::opencl) {
       assert(MovedPlatform.get() != nullptr);
     }
   }
@@ -49,9 +47,7 @@ int main() {
     platform WillMovedPlatform(platformB);
     WillMovedPlatform = std::move(Platform);
     assert(hash == std::hash<platform>()(WillMovedPlatform));
-    assert(platformA.is_host() == WillMovedPlatform.is_host());
-    if (!platformA.is_host() &&
-        platformA.get_backend() == sycl::backend::opencl) {
+    if (platformA.get_backend() == sycl::backend::opencl) {
       assert(WillMovedPlatform.get() != nullptr);
     }
   }
@@ -63,7 +59,6 @@ int main() {
     assert(hash == std::hash<platform>()(Platform));
     assert(hash == std::hash<platform>()(PlatformCopy));
     assert(Platform == PlatformCopy);
-    assert(Platform.is_host() == PlatformCopy.is_host());
   }
   {
     std::cout << "copy assignment operator" << std::endl;
@@ -74,6 +69,5 @@ int main() {
     assert(hash == std::hash<platform>()(Platform));
     assert(hash == std::hash<platform>()(WillPlatformCopy));
     assert(Platform == WillPlatformCopy);
-    assert(Platform.is_host() == WillPlatformCopy.is_host());
   }
 }

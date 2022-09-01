@@ -1,5 +1,4 @@
 // RUN: %clangxx -D__SYCL_INTERNAL_API -fsycl %s -o %t.out
-// RUN: %HOST_RUN_PLACEHOLDER %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // RUN: %ACC_RUN_PLACEHOLDER %t.out
@@ -34,16 +33,16 @@ int main() {
   PrgA.build_with_kernel_type<KernelName>(BuildOpts);
   assert(PrgA.get_compile_options().empty());
   assert(PrgA.get_link_options().empty());
-  assert(PrgA.get_build_options() == (PrgA.is_host() ? "" : BuildOpts));
+  assert(PrgA.get_build_options() == BuildOpts);
 
   sycl::program PrgB{Ctx};
   PrgB.compile_with_kernel_type<KernelName>(CompileOpts);
-  assert(PrgB.get_compile_options() == (PrgB.is_host() ? "" : CompileOpts));
+  assert(PrgB.get_compile_options() == CompileOpts);
   assert(PrgB.get_link_options().empty());
-  assert(PrgB.get_build_options() == (PrgB.is_host() ? "" : CompileOpts));
+  assert(PrgB.get_build_options() == CompileOpts);
 
   PrgB.link(LinkOpts);
-  assert(PrgB.get_compile_options() == (PrgB.is_host() ? "" : CompileOpts));
-  assert(PrgB.get_link_options() == (PrgB.is_host() ? "" : LinkOpts));
-  assert(PrgB.get_build_options() == (PrgB.is_host() ? "" : LinkOpts));
+  assert(PrgB.get_compile_options() == CompileOpts);
+  assert(PrgB.get_link_options() == LinkOpts);
+  assert(PrgB.get_build_options() == LinkOpts);
 }

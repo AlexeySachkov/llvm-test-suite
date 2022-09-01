@@ -25,10 +25,6 @@ using namespace sycl;
 
 int main(int argc, char *argv[]) {
   queue q;
-  if (q.is_host()) {
-    std::cout << "Skipping test\n";
-    return 0;
-  }
 
   // Compute expected answer.
   const uint32_t dimA = 2;

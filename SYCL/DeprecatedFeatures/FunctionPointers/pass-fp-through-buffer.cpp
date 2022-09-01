@@ -3,7 +3,6 @@
 // CUDA does not support the function pointer as kernel argument extension.
 
 // RUN: %clangxx -Xclang -fsycl-allow-func-ptr -fsycl -D__SYCL_INTERNAL_API %s -o %t.out
-// RUN: %HOST_RUN_PLACEHOLDER %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // FIXME: This test should use runtime early exit once correct check for
@@ -40,17 +39,15 @@ int main() {
     auto DTAcc = DispatchTable.get_access<sycl::access::mode::discard_write>();
     DTAcc[0] = sycl::ext::oneapi::get_device_func_ptr(&add, "add", P, D);
     DTAcc[1] = sycl::ext::oneapi::get_device_func_ptr(&sub, "sub", P, D);
-    if (!D.is_host()) {
-      // FIXME: update this check with query to supported extension
-      // For now, we don't have runtimes that report required OpenCL extension
-      // and it is hard to understand should this functionality be supported or
-      // not. So, let's skip this test if DTAcc[i] is 0, which means that by
-      // some reason we failed to obtain device function pointer. Just to avoid
-      // false alarms
-      if (0 == DTAcc[0] || 0 == DTAcc[1]) {
-        std::cout << "Test PASSED. (it was actually skipped)" << std::endl;
-        return 0;
-      }
+    // FIXME: update this check with query to supported extension
+    // For now, we don't have runtimes that report required OpenCL extension
+    // and it is hard to understand should this functionality be supported or
+    // not. So, let's skip this test if DTAcc[i] is 0, which means that by
+    // some reason we failed to obtain device function pointer. Just to avoid
+    // false alarms
+    if (0 == DTAcc[0] || 0 == DTAcc[1]) {
+      std::cout << "Test PASSED. (it was actually skipped)" << std::endl;
+      return 0;
     }
   }
 

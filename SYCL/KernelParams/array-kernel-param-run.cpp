@@ -200,7 +200,7 @@ bool run_tests() {
   }
 
   auto D = Q.get_device();
-  const char *devType = D.is_host() ? "Host" : D.is_cpu() ? "CPU" : "GPU";
+  const char *devType = D.is_cpu() ? "CPU" : "GPU";
   std::cout << passCount << " of " << testCount << " tests passed on "
             << devType << "\n";
 
@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
   bool passed = true;
   default_selector selector{};
   auto D = selector.select_device();
-  const char *devType = D.is_host() ? "Host" : D.is_cpu() ? "CPU" : "GPU";
+  const char *devType = D.is_cpu() ? "CPU" : "GPU";
   std::cout << "Running on device " << devType << " ("
             << D.get_info<sycl::info::device::name>() << ")\n";
   try {

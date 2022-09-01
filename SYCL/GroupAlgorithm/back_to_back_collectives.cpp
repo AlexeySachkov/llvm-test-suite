@@ -14,10 +14,6 @@ class back_to_back;
 
 int main() {
   queue q;
-  if (q.get_device().is_host()) {
-    std::cout << "Skipping test\n";
-    return 0;
-  }
 
   // Use max work-group size to maximize chance of race
   auto KernelID = get_kernel_id<back_to_back>();
