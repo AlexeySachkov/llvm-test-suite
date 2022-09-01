@@ -24,9 +24,7 @@ int main() {
 
   Q.submit([&](handler &Cgh) {
     auto AccA = BufA.get_access<access::mode::read_write>(Cgh);
-    Cgh.parallel_for<Foo>(Range, [=](id<1> Idx) {
-      AccA[Idx] = Idx[0];
-    });
+    Cgh.parallel_for<Foo>(Range, [=](id<1> Idx) { AccA[Idx] = Idx[0]; });
   });
 
   {

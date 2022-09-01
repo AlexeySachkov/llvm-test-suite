@@ -18,12 +18,9 @@ int main() {
   int i = 1;
   std::vector<platform> openclPlatforms;
   for (const auto &plt : platform::get_platforms()) {
-    std::cout << "Platform " << i++
-              << " is available: OpenCL: "
-              << std::hex
-              << ((plt.get_backend() != sycl::backend::opencl)
-                      ? nullptr
-                      : plt.get())
+    std::cout << "Platform " << i++ << " is available: OpenCL: " << std::hex
+              << ((plt.get_backend() != sycl::backend::opencl) ? nullptr
+                                                               : plt.get())
               << std::endl;
   }
 
