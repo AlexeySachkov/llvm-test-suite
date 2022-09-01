@@ -191,8 +191,7 @@ int main() {
                  << "}}" << std::endl;
               passed = true;
               break;
-            } else if ((plt.get_backend() ==
-                        backend::ext_oneapi_level_zero) &&
+            } else if ((plt.get_backend() == backend::ext_oneapi_level_zero) &&
                        (sycl_be.find("level_zero") != std::string::npos)) {
               fs << "DeviceName:{{" << name << "}},DriverVersion:{{" << ver
                  << "}}" << std::endl;
@@ -453,14 +452,12 @@ int main() {
                 ((plt.get_backend() == backend::ext_oneapi_level_zero) &&
                  (sycl_be.find("level_zero") != std::string::npos))) {
               if ((pos = ver.find(".")) == std::string::npos) {
-                throw std::runtime_error(
-                    "Malformed syntax in version string");
+                throw std::runtime_error("Malformed syntax in version string");
               }
               pos++;
               size_t start = pos;
               if ((pos = ver.find(".", pos)) == std::string::npos) {
-                throw std::runtime_error(
-                    "Malformed syntax in version string");
+                throw std::runtime_error("Malformed syntax in version string");
               }
               ver.replace(start, pos - start, "*");
             } else if (((plt.get_backend() == backend::ext_oneapi_cuda) &&
@@ -468,8 +465,7 @@ int main() {
                        ((plt.get_backend() == backend::ext_oneapi_hip) &&
                         (sycl_be.find("hip") != std::string::npos))) {
               if ((pos = ver.find(".")) == std::string::npos) {
-                throw std::runtime_error(
-                    "Malformed syntax in version string");
+                throw std::runtime_error("Malformed syntax in version string");
               }
               pos++;
               ver.replace(pos, ver.length(), "*");
@@ -834,8 +830,8 @@ int main() {
                  (sycl_be.find("cuda") != std::string::npos)) ||
                 ((plt.get_backend() == backend::ext_oneapi_hip) &&
                  (sycl_be.find("hip") != std::string::npos))) {
-              fs << "DeviceName:{{" << name << "}},DriverVersion:HAHA{{"
-                 << ver << "}}" << std::endl;
+              fs << "DeviceName:{{" << name << "}},DriverVersion:HAHA{{" << ver
+                 << "}}" << std::endl;
               passed = true;
               break;
             }
