@@ -1,4 +1,4 @@
-// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple %s -I . -o %t.out
+// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple -fsycl-device-code-split=per_kernel %s -I . -o %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // RUN: %ACC_RUN_PLACEHOLDER %t.out
@@ -349,6 +349,9 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
+  bool doubleIsSupported = q.get_device().has(sycl::aspect::fp64);
+  bool halfIsSupported = q.get_device().has(sycl::aspect::fp16);
+
   std::vector<int> sizes{1, 12, 32};
 
   for (int i = 0; i < sizes.size(); ++i) {
@@ -357,8 +360,10 @@ int main(int argc, char *argv[]) {
     test_sort_by_type<std::int32_t>(q, sizes[i]);
     test_sort_by_type<std::uint32_t>(q, sizes[i]);
     test_sort_by_type<float>(q, sizes[i]);
-    test_sort_by_type<sycl::half>(q, sizes[i]);
-    test_sort_by_type<double>(q, sizes[i]);
+    if (halfIsSupported)
+      test_sort_by_type<sycl::half>(q, sizes[i]);
+    if (doubleIsSupported)
+      test_sort_by_type<double>(q, sizes[i]);
     test_sort_by_type<std::size_t>(q, sizes[i]);
 
     test_custom_type(q, sizes[i]);

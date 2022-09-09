@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple  %s -o %t1.out
+// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple -fsycl-device-code-split=per_kernel %s -o %t1.out
 // RUN: %CPU_RUN_PLACEHOLDER %t1.out
 // RUN: %GPU_RUN_PLACEHOLDER %t1.out
 // RUN: %ACC_RUN_PLACEHOLDER %t1.out
@@ -96,8 +96,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::host);
     runTests<half>(q, half(4.2f), alloc::host, alloc::host);
     runTests<float>(q, 4.242f, alloc::host, alloc::host);
-    runTests<double>(q, 4.24242, alloc::host, alloc::host);
-    runTests<test_struct>(q, test_obj, alloc::host, alloc::host);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::host, alloc::host);
+      runTests<test_struct>(q, test_obj, alloc::host, alloc::host);
+    }
   }
 
   if (dev.has(aspect::usm_shared_allocations)) {
@@ -107,8 +109,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::shared, alloc::shared);
     runTests<half>(q, half(4.2f), alloc::shared, alloc::shared);
     runTests<float>(q, 4.242f, alloc::shared, alloc::shared);
-    runTests<double>(q, 4.24242, alloc::shared, alloc::shared);
-    runTests<test_struct>(q, test_obj, alloc::shared, alloc::shared);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::shared, alloc::shared);
+      runTests<test_struct>(q, test_obj, alloc::shared, alloc::shared);
+      }
   }
 
   if (dev.has(aspect::usm_device_allocations)) {
@@ -118,8 +122,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::device, alloc::device);
     runTests<half>(q, half(4.2f), alloc::device, alloc::device);
     runTests<float>(q, 4.242f, alloc::device, alloc::device);
-    runTests<double>(q, 4.24242, alloc::device, alloc::device);
-    runTests<test_struct>(q, test_obj, alloc::device, alloc::device);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::device, alloc::device);
+      runTests<test_struct>(q, test_obj, alloc::device, alloc::device);
+    }
   }
 
   if (dev.has(aspect::usm_host_allocations) &&
@@ -130,8 +136,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::shared);
     runTests<half>(q, half(4.2f), alloc::host, alloc::shared);
     runTests<float>(q, 4.242f, alloc::host, alloc::shared);
-    runTests<double>(q, 4.24242, alloc::host, alloc::shared);
-    runTests<test_struct>(q, test_obj, alloc::host, alloc::shared);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::host, alloc::shared);
+      runTests<test_struct>(q, test_obj, alloc::host, alloc::shared);
+    }
   }
 
   if (dev.has(aspect::usm_host_allocations) &&
@@ -142,8 +150,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::device);
     runTests<half>(q, half(4.2f), alloc::host, alloc::device);
     runTests<float>(q, 4.242f, alloc::host, alloc::device);
-    runTests<double>(q, 4.24242, alloc::host, alloc::device);
-    runTests<test_struct>(q, test_obj, alloc::host, alloc::device);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::host, alloc::device);
+      runTests<test_struct>(q, test_obj, alloc::host, alloc::device);
+    }
   }
 
   if (dev.has(aspect::usm_shared_allocations) &&
@@ -154,8 +164,10 @@ int main() {
     runTests<long long>(q, 4242, alloc::shared, alloc::device);
     runTests<half>(q, half(4.2f), alloc::shared, alloc::device);
     runTests<float>(q, 4.242f, alloc::shared, alloc::device);
-    runTests<double>(q, 4.24242, alloc::shared, alloc::device);
-    runTests<test_struct>(q, test_obj, alloc::shared, alloc::device);
+    if (dev.has(aspect::fp64) {
+      runTests<double>(q, 4.24242, alloc::shared, alloc::device);
+      runTests<test_struct>(q, test_obj, alloc::shared, alloc::device);
+    }
   }
 
   return 0;
