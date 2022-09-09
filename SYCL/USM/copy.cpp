@@ -96,7 +96,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::host);
     runTests<half>(q, half(4.2f), alloc::host, alloc::host);
     runTests<float>(q, 4.242f, alloc::host, alloc::host);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::host, alloc::host);
       runTests<test_struct>(q, test_obj, alloc::host, alloc::host);
     }
@@ -109,7 +109,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::shared, alloc::shared);
     runTests<half>(q, half(4.2f), alloc::shared, alloc::shared);
     runTests<float>(q, 4.242f, alloc::shared, alloc::shared);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::shared, alloc::shared);
       runTests<test_struct>(q, test_obj, alloc::shared, alloc::shared);
       }
@@ -122,7 +122,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::device, alloc::device);
     runTests<half>(q, half(4.2f), alloc::device, alloc::device);
     runTests<float>(q, 4.242f, alloc::device, alloc::device);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::device, alloc::device);
       runTests<test_struct>(q, test_obj, alloc::device, alloc::device);
     }
@@ -136,7 +136,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::shared);
     runTests<half>(q, half(4.2f), alloc::host, alloc::shared);
     runTests<float>(q, 4.242f, alloc::host, alloc::shared);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::host, alloc::shared);
       runTests<test_struct>(q, test_obj, alloc::host, alloc::shared);
     }
@@ -150,7 +150,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::host, alloc::device);
     runTests<half>(q, half(4.2f), alloc::host, alloc::device);
     runTests<float>(q, 4.242f, alloc::host, alloc::device);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::host, alloc::device);
       runTests<test_struct>(q, test_obj, alloc::host, alloc::device);
     }
@@ -164,7 +164,7 @@ int main() {
     runTests<long long>(q, 4242, alloc::shared, alloc::device);
     runTests<half>(q, half(4.2f), alloc::shared, alloc::device);
     runTests<float>(q, 4.242f, alloc::shared, alloc::device);
-    if (dev.has(aspect::fp64) {
+    if (dev.has(aspect::fp64)) {
       runTests<double>(q, 4.24242, alloc::shared, alloc::device);
       runTests<test_struct>(q, test_obj, alloc::shared, alloc::device);
     }

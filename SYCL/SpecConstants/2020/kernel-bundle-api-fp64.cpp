@@ -123,19 +123,6 @@ bool test_set_and_get_on_host(sycl::queue q) {
       return false;
     }
 
-    // Check default values
-    if (!check_value(
-            0, input_bundle.get_specialization_constant<int_id>(),
-            "integer specializaiton constant before setting any value"))
-      ++errors;
-
-    custom_type custom_type_ref;
-    if (!check_value(
-            custom_type_ref,
-            input_bundle.get_specialization_constant<custom_type_id>(),
-            "custom_type specializaiton constant before setting any value"))
-      ++errors;
-
     // Update values
     double new_double_value = 3.0;
 
