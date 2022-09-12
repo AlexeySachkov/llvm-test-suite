@@ -21,6 +21,7 @@
 #include "common.hpp"
 
 constexpr sycl::specialization_id<int> int_id;
+constexpr sycl::specialization_id<double> double_id(3.14);
 constexpr sycl::specialization_id<custom_type> custom_type_id;
 
 class TestDefaultValuesKernel;
@@ -75,6 +76,7 @@ bool test_default_values(sycl::queue q) {
   }
 
   sycl::buffer<int> int_buffer(1);
+  sycl::buffer<double> double_buffer(1);
   sycl::buffer<custom_type> custom_type_buffer(1);
 
   auto input_bundle =
@@ -84,10 +86,12 @@ bool test_default_values(sycl::queue q) {
   q.submit([&](sycl::handler &cgh) {
     cgh.use_kernel_bundle(exec_bundle);
     auto int_acc = int_buffer.get_access<sycl::access::mode::write>(cgh);
+    auto double_acc = double_buffer.get_access<sycl::access::mode::write>(cgh);
     auto custom_type_acc =
         custom_type_buffer.get_access<sycl::access::mode::write>(cgh);
     cgh.single_task<TestDefaultValuesKernel>([=](sycl::kernel_handler kh) {
       int_acc[0] = kh.get_specialization_constant<int_id>();
+      double_acc[0] = kh.get_specialization_constant<double_id>();
       custom_type_acc[0] = kh.get_specialization_constant<custom_type_id>();
     });
   });
@@ -96,6 +100,10 @@ bool test_default_values(sycl::queue q) {
   if (!check_value(
           0, int_acc[0],
           "integer specialization constant (defined without default value)"))
+    return false;
+
+  auto double_acc = double_buffer.get_access<sycl::access::mode::read>();
+  if (!check_value(3.14, double_acc[0], "double specialization constant"))
     return false;
 
   auto custom_type_acc =
@@ -137,6 +145,11 @@ bool test_set_and_get_on_host(sycl::queue q) {
             "integer specializaiton constant before setting any value"))
       ++errors;
 
+    if (!check_value(3.14,
+                     input_bundle.get_specialization_constant<double_id>(),
+                     "double specializaiton constant before setting any value"))
+      ++errors;
+
     custom_type custom_type_ref;
     if (!check_value(
             custom_type_ref,
@@ -146,9 +159,11 @@ bool test_set_and_get_on_host(sycl::queue q) {
 
     // Update values
     int new_int_value = 42;
+    double new_double_value = 3.0;
     custom_type new_custom_type_value('b', 1.0, 12);
 
     input_bundle.set_specialization_constant<int_id>(new_int_value);
+    input_bundle.set_specialization_constant<double_id>(new_double_value);
     input_bundle.set_specialization_constant<custom_type_id>(
         new_custom_type_value);
 
@@ -156,6 +171,11 @@ bool test_set_and_get_on_host(sycl::queue q) {
     if (!check_value(
             new_int_value, input_bundle.get_specialization_constant<int_id>(),
             "integer specializaiton constant after setting a new value"))
+      ++errors;
+
+    if (!check_value(new_double_value,
+                     input_bundle.get_specialization_constant<double_id>(),
+                     "double specializaiton constant after setting a value"))
       ++errors;
 
     if (!check_value(
@@ -173,6 +193,11 @@ bool test_set_and_get_on_host(sycl::queue q) {
                      "integer specializaiton constant after build"))
       ++errors;
 
+    if (!check_value(new_double_value,
+                     exec_bundle.get_specialization_constant<double_id>(),
+                     "double specializaiton constant after build"))
+      ++errors;
+
     if (!check_value(new_custom_type_value,
                      exec_bundle.get_specialization_constant<custom_type_id>(),
                      "custom_type specializaiton constant after build"))
@@ -185,14 +210,17 @@ bool test_set_and_get_on_host(sycl::queue q) {
 
 bool test_set_and_get_on_device(sycl::queue q) {
   sycl::buffer<int> int_buffer(1);
+  sycl::buffer<double> double_buffer(1);
   sycl::buffer<custom_type> custom_type_buffer(1);
 
   int new_int_value = 42;
+  double new_double_value = 3.0;
   custom_type new_custom_type_value('b', 1.0, 12);
 
   auto input_bundle =
       sycl::get_kernel_bundle<sycl::bundle_state::input>(q.get_context());
   input_bundle.set_specialization_constant<int_id>(new_int_value);
+  input_bundle.set_specialization_constant<double_id>(new_double_value);
   input_bundle.set_specialization_constant<custom_type_id>(
       new_custom_type_value);
   auto exec_bundle = sycl::build(input_bundle);
@@ -200,11 +228,13 @@ bool test_set_and_get_on_device(sycl::queue q) {
   q.submit([&](sycl::handler &cgh) {
     cgh.use_kernel_bundle(exec_bundle);
     auto int_acc = int_buffer.get_access<sycl::access::mode::write>(cgh);
+    auto double_acc = double_buffer.get_access<sycl::access::mode::write>(cgh);
     auto custom_type_acc =
         custom_type_buffer.get_access<sycl::access::mode::write>(cgh);
 
     cgh.single_task<TestSetAndGetOnDevice>([=](sycl::kernel_handler kh) {
       int_acc[0] = kh.get_specialization_constant<int_id>();
+      double_acc[0] = kh.get_specialization_constant<double_id>();
       custom_type_acc[0] = kh.get_specialization_constant<custom_type_id>();
     });
   });
@@ -212,6 +242,11 @@ bool test_set_and_get_on_device(sycl::queue q) {
   auto int_acc = int_buffer.get_access<sycl::access::mode::read>();
   if (!check_value(new_int_value, int_acc[0],
                    "integer specialization constant"))
+    return false;
+
+  auto double_acc = double_buffer.get_access<sycl::access::mode::read>();
+  if (!check_value(new_double_value, double_acc[0],
+                   "double specialization constant"))
     return false;
 
   auto custom_type_acc =
