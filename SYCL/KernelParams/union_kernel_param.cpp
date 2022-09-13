@@ -12,27 +12,27 @@ union TestUnion {
 public:
   int myint;
   char mychar;
-  float myfloat;
+  double mydouble;
 
-  TestUnion() { myfloat = 0.0; };
+  TestUnion() { mydouble = 0.0; };
 };
 
 int main(int argc, char **argv) {
   TestUnion x;
-  x.myfloat = 5.0;
-  float myfloat = 0.0;
+  x.mydouble = 5.0;
+  double mydouble = 0.0;
 
   sycl::queue queue;
   {
-    sycl::buffer<float, 1> buf(&myfloat, 1);
+    sycl::buffer<double, 1> buf(&mydouble, 1);
     queue.submit([&](sycl::handler &cgh) {
       auto acc = buf.get_access<sycl::access::mode::read_write>(cgh);
-      cgh.single_task<class test>([=]() { acc[0] = x.myfloat; });
+      cgh.single_task<class test>([=]() { acc[0] = x.mydouble; });
     });
   }
 
-  if (myfloat != 5.0) {
-    printf("FAILED\nmyfloat = %d\n", myfloat);
+  if (mydouble != 5.0) {
+    printf("FAILED\nmydouble = %d\n", mydouble);
     return 1;
   }
   return 0;

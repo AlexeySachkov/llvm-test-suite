@@ -349,9 +349,6 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  bool doubleIsSupported = q.get_device().has(sycl::aspect::fp64);
-  bool halfIsSupported = q.get_device().has(sycl::aspect::fp16);
-
   std::vector<int> sizes{1, 12, 32};
 
   for (int i = 0; i < sizes.size(); ++i) {
@@ -360,9 +357,9 @@ int main(int argc, char *argv[]) {
     test_sort_by_type<std::int32_t>(q, sizes[i]);
     test_sort_by_type<std::uint32_t>(q, sizes[i]);
     test_sort_by_type<float>(q, sizes[i]);
-    if (halfIsSupported)
+    if (q.get_device().has(sycl::aspect::fp16))
       test_sort_by_type<sycl::half>(q, sizes[i]);
-    if (doubleIsSupported)
+    if (q.get_device().has(sycl::aspect::fp64))
       test_sort_by_type<double>(q, sizes[i]);
     test_sort_by_type<std::size_t>(q, sizes[i]);
 
