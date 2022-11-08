@@ -11,7 +11,7 @@ using namespace sycl;
 
 const char *clSource = R"(
     kernel void test(global int *a, local float *b, int n) {
-        if (get_local_id(0) != 0) {
+        if (get_local_id(0) == 0) {
           for (int i = 0; i < n; i++)
               b[i] = i;
         }
