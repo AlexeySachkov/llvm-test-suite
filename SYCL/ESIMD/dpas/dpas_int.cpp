@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 // REQUIRES: gpu-intel-pvc || gpu-intel-dg2 || esimd_emulator
 // UNSUPPORTED: cuda || hip
-// RUN: %clangxx -fsycl -fsycl-device-code-split=per_kernel %s -o %t.out
+// RUN: %clangxx -fsycl %s -o %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 
 // This test verifies DPAS support for 2,4,8-bit integers.

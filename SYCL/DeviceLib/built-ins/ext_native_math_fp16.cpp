@@ -1,10 +1,7 @@
-// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple -fsycl-device-code-split=per_kernel %s -o %t.out
+// RUN: %clangxx -fsycl -fsycl-targets=%sycl_triple %s -o %t.out
 // RUN: %CPU_RUN_PLACEHOLDER %t.out
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // RUN: %ACC_RUN_PLACEHOLDER %t.out
-
-// OpenCL CPU driver does not support cl_khr_fp16 extension for this reason this
-// test is compiled with the -fsycl-device-code-split flag
 
 // Tests oneapi extension native math functions for sycl::vec and sycl::marray
 // fp16 cases.
