@@ -78,12 +78,12 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class maxSLL2SLL1>([=]() {
-          AccR[0] = s::max(longlong2{5, 3}, s::longlong{2});
+          AccR[0] = s::max(longlong2{5, 3}, 2ll);
         });
       });
     }
-    s::longlong r1 = r.x();
-    s::longlong r2 = r.y();
+    long long r1 = r.x();
+    long long r2 = r.y();
     assert(r1 == 5);
     assert(r2 == 3);
   }
@@ -117,12 +117,12 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class maxULL2ULL1>([=]() {
-          AccR[0] = s::max(ulonglong2{5, 3}, s::ulonglong{2});
+          AccR[0] = s::max(ulonglong2{5, 3}, 2ull);
         });
       });
     }
-    s::ulonglong r1 = r.x();
-    s::ulonglong r2 = r.y();
+    unsigned long long r1 = r.x();
+    unsigned long long r2 = r.y();
     assert(r1 == 5);
     assert(r2 == 3);
   }

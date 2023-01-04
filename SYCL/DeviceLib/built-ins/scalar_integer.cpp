@@ -56,11 +56,11 @@ int main() {
     assert(r == 2);
   }
 
-  // min (longlong)
+  // min (long long)
   {
-    s::longlong r{0};
+    long long r{0};
     {
-      s::buffer<s::longlong, 1> BufR(&r, s::range<1>(1));
+      s::buffer<long long, 1> BufR(&r, s::range<1>(1));
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
@@ -86,11 +86,11 @@ int main() {
     assert(r == 2);
   }
 
-  // min (ulonglong)
+  // min (unsigned long long)
   {
-    s::ulonglong r{0};
+    unsigned long long r{0};
     {
-      s::buffer<s::ulonglong, 1> BufR(&r, s::range<1>(1));
+      s::buffer<unsigned long long, 1> BufR(&r, s::range<1>(1));
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
@@ -485,9 +485,9 @@ int main() {
 
   // upsample - 6
   {
-    s::cl_long r{0};
+    long long r{0};
     {
-      s::buffer<s::cl_long, 1> BufR(&r, s::range<1>(1));
+      s::buffer<long long, 1> BufR(&r, s::range<1>(1));
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);

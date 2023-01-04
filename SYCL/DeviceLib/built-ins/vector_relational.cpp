@@ -345,7 +345,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class signbitF3>([=]() {
-          AccR[0] = s::signbit(float3{0.5f, -12.0f, INFINITY});
+          AccR[0] = s::signbit(s::float3{0.5f, -12.0f, INFINITY});
         });
       });
     }

@@ -160,14 +160,14 @@ int main() {
       myQueue.submit([&](handler &cgh) {
         auto B = b.get_access<access::mode::write>(cgh);
         cgh.single_task<class test_7>([=]() {
-          s::uchar4 abc = {4, 2, 1, 0};
+          uchar4 abc = {4, 2, 1, 0};
 
-          s::uchar4 c_each;
+          uchar4 c_each;
           c_each.x() = abc.x();
           c_each.y() = abc.y();
           c_each.z() = abc.z();
 
-          s::uchar4 c_full;
+          uchar4 c_full;
           c_full = abc;
 
           B[0] = c_each.x();
@@ -195,7 +195,7 @@ int main() {
       myQueue.submit([&](handler &cgh) {
         auto B = b.get_access<access::mode::write>(cgh);
         cgh.single_task<class test_8>([=]() {
-          s::uchar4 cba;
+          uchar4 cba;
           unsigned char x = 1;
           unsigned char y = 2;
           unsigned char z = 3;
@@ -205,7 +205,7 @@ int main() {
           cba.z() = z;
           cba.w() = w;
 
-          s::uchar4 abc = {1, 2, 3, 4};
+          uchar4 abc = {1, 2, 3, 4};
           abc.x() = cba.s0();
           abc.y() = cba.s1();
           abc.z() = cba.s2();
@@ -235,7 +235,7 @@ int main() {
       myQueue.submit([&](handler &cgh) {
         auto B = b.get_access<access::mode::write>(cgh);
         cgh.single_task<class test_9>([=]() {
-          s::uchar4 vec;
+          uchar4 vec;
           unsigned int add = 254;
           unsigned char factor = 2;
           vec.x() = 2;
