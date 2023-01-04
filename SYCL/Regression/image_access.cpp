@@ -20,22 +20,22 @@
 int main() {
   try {
     sycl::range<1> Range(32);
-    std::vector<cl_float> Data(Range.size() * 4, 0.0f);
+    std::vector<sycl:opencl::cl_float> Data(Range.size() * 4, 0.0f);
     sycl::image<1> Image(Data.data(), sycl::image_channel_order::rgba,
                          sycl::image_channel_type::fp32, Range);
     sycl::queue Queue;
 
     Queue.submit([&](sycl::handler &CGH) {
-      sycl::accessor<sycl::cl_int4, 1, sycl::access::mode::read,
-                     sycl::access::target::image,
+      sycl::accessor<sycl::vec<sycl::opencl::cl_int, 4>, 1,
+                     sycl::access::mode::read, sycl::access::target::image,
                      sycl::access::placeholder::false_t>
           A(Image, CGH);
       CGH.single_task<class MyKernel>([=]() {});
     });
     Queue.wait_and_throw();
 
-    sycl::accessor<sycl::cl_int4, 1, sycl::access::mode::read,
-                   sycl::access::target::host_image,
+    sycl::accessor<sycl::vec<sycl::opencl::cl_int, 4>, 1,
+                   sycl::access::mode::read, sycl::access::target::host_image,
                    sycl::access::placeholder::false_t>
         A(Image);
   } catch (sycl::exception &E) {

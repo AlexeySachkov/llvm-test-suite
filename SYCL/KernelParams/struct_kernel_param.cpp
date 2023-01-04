@@ -23,8 +23,8 @@ struct MyNestedStruct {
   bool operator==(const MyNestedStruct &Rhs) {
     return (FldArr[0] == Rhs.FldArr[0] && FldFloat == Rhs.FldFloat);
   }
-  sycl::cl_char FldArr[1];
-  sycl::cl_float FldFloat;
+  sycl::opencl::cl_char FldArr[1];
+  sycl::opencl::cl_float FldFloat;
 };
 
 struct MyStruct {
@@ -36,13 +36,13 @@ struct MyStruct {
                        std::begin(Rhs.FldArr)) &&
             FldInt == Rhs.FldInt);
   }
-  sycl::cl_char FldChar;
-  sycl::cl_long FldLong;
-  sycl::cl_short FldShort;
-  sycl::cl_uint FldUint;
+  sycl::opencl::cl_char FldChar;
+  sycl::opencl::cl_long FldLong;
+  sycl::opencl::cl_short FldShort;
+  sycl::opencl::cl_uint FldUint;
   MyNestedStruct FldStruct;
-  sycl::cl_short FldArr[3];
-  sycl::cl_int FldInt;
+  sycl::opencl::cl_short FldArr[3];
+  sycl::opencl::cl_int FldInt;
 };
 
 MyStruct GlobS;
@@ -114,12 +114,12 @@ bool test1() {
 }
 
 int main(int argc, char **argv) {
-  sycl::cl_char PartChar = argc;
-  sycl::cl_short PartShort = argc << 8;
-  sycl::cl_int PartInt = argc << 16;
-  sycl::cl_uint PartUint = argc << 16;
-  sycl::cl_long PartLong = ((sycl::cl_long)argc) << 32;
-  sycl::cl_float PartFloat = argc;
+  sycl::opencl::cl_char PartChar = argc;
+  sycl::opencl::cl_short PartShort = argc << 8;
+  sycl::opencl::cl_int PartInt = argc << 16;
+  sycl::opencl::cl_uint PartUint = argc << 16;
+  sycl::opencl::cl_long PartLong = ((sycl::opencl::cl_long)argc) << 32;
+  sycl::opencl::cl_float PartFloat = argc;
 
   GlobS = {PartChar,
            PartLong,
