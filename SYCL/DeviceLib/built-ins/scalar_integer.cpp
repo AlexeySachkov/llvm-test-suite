@@ -370,8 +370,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class rotateSI1SI2>([=]() {
-          AccR[0] = s::rotate(static_cast<char>((unsigned char)0xe0),
-                              50);
+          AccR[0] = s::rotate((unsigned char)0xe0, (unsigned char)50);
         });
       });
     }
@@ -524,7 +523,7 @@ int main() {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class mad24SI1SI1SI1>([=]() {
           AccR[0] =
-              s::mad24(0xFFFFFFFF, 20, 20);
+              s::mad24((int)0xFFFFFFFF, (int)20, (int)20);
         });
       });
     }
@@ -540,7 +539,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class mul24SI1SI1>([=]() {
-          AccR[0] = s::mul24(0xFFFFFFFF, 20);
+          AccR[0] = s::mul24((int)0xFFFFFFFF, (int)20);
         });
       });
     }

@@ -381,14 +381,14 @@ int main() {
 
   // select-float,bool
   {
-    s::cl_float r{0};
+    float r{0};
     {
-      s::buffer<s::cl_float, 1> BufR(&r, s::range<1>(1));
+      s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class selectF1F1B1true>([=]() {
-          AccR[0] = s::select(s::cl_float{34.34}, s::cl_float{123.123}, true);
+          AccR[0] = s::select(34.34f, 123.123f, true);
         });
       });
     }
@@ -397,14 +397,14 @@ int main() {
 
   // select-float,bool
   {
-    s::cl_float r{0};
+    float r{0};
     {
-      s::buffer<s::cl_float, 1> BufR(&r, s::range<1>(1));
+      s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class selectF1F1B1false>([=]() {
-          AccR[0] = s::select(s::cl_float{34.34}, s::cl_float{123.123}, false);
+          AccR[0] = s::select(34.34f, 123.123f, false);
         });
       });
     }

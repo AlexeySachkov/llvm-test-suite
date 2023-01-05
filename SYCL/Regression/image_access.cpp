@@ -20,7 +20,7 @@
 int main() {
   try {
     sycl::range<1> Range(32);
-    std::vector<sycl:opencl::cl_float> Data(Range.size() * 4, 0.0f);
+    std::vector<sycl::opencl::cl_float> Data(Range.size() * 4, 0.0f);
     sycl::image<1> Image(Data.data(), sycl::image_channel_order::rgba,
                          sycl::image_channel_type::fp32, Range);
     sycl::queue Queue;

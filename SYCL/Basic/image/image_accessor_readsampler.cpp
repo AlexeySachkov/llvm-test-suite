@@ -24,13 +24,16 @@ namespace s = sycl;
 
 template <int unique_number> class kernel_class;
 
-void validateReadData(s::cl_float4 ReadData, s::cl_float4 ExpectedColor,
-                      s::cl_int precision = 1) {
+void validateReadData(s::vec<s::opencl::cl_float, 4> ReadData,
+                      s::vec<s::opencl::cl_float, 4> ExpectedColor,
+                      int precision = 1) {
   // Maximum difference of 1.5 ULP is allowed when precision = 1.
-  s::cl_int4 PixelDataInt = ReadData.template as<s::cl_int4>();
-  s::cl_int4 ExpectedDataInt = ExpectedColor.template as<s::cl_int4>();
-  s::cl_int4 Diff = ExpectedDataInt - PixelDataInt;
-  s::cl_int DataIsCorrect =
+  s::vec<s::opencl::cl_int, 4> PixelDataInt =
+      ReadData.template as<s::vec<s::opencl::cl_int, 4>>();
+  s::vec<s::opencl::cl_int, 4> ExpectedDataInt =
+      ExpectedColor.template as<s::vec<s::opencl::cl_int, 4>>();
+  s::vec<s::opencl::cl_int, 4> Diff = ExpectedDataInt - PixelDataInt;
+  int DataIsCorrect =
       s::all((Diff <= precision) && (Diff >= (-precision)));
 #if DEBUG_OUTPUT
   {
@@ -52,23 +55,28 @@ void validateReadData(s::cl_float4 ReadData, s::cl_float4 ExpectedColor,
 }
 
 template <int i>
-void checkReadSampler(char *host_ptr, s::sampler Sampler, s::cl_float4 Coord,
-                      s::cl_float4 ExpectedColor, s::cl_int precision = 1) {
+void checkReadSampler(char *host_ptr, s::sampler Sampler,
+                      s::vec<s::opencl::cl_float, 4> Coord,
+                      s::vec<s::opencl::cl_float, 4> ExpectedColor,
+                      int precision = 1) {
 
-  s::cl_float4 ReadData;
+  s::vec<s::opencl::cl_float, 4> ReadData;
   {
     // image with dim = 3
     s::image<3> Img(host_ptr, s::image_channel_order::rgba,
                     s::image_channel_type::snorm_int8, s::range<3>{2, 3, 4});
     s::queue myQueue;
-    s::buffer<s::cl_float4, 1> ReadDataBuf(&ReadData, s::range<1>(1));
+    s::buffer<s::vec<s::opencl::cl_float, 4>, 1> ReadDataBuf(&ReadData,
+                                                             s::range<1>(1));
     myQueue.submit([&](s::handler &cgh) {
-      auto ReadAcc = Img.get_access<s::cl_float4, s::access::mode::read>(cgh);
-      s::accessor<s::cl_float4, 1, s::access::mode::write> ReadDataBufAcc(
-          ReadDataBuf, cgh);
+      auto ReadAcc =
+          Img.get_access<s::vec<s::opencl::cl_float, 4>, s::access::mode::read>(
+              cgh);
+      s::accessor<s::vec<s::opencl::cl_float, 4>, 1, s::access::mode::write>
+          ReadDataBufAcc(ReadDataBuf, cgh);
 
     cgh.single_task<class kernel_class<i>>([=](){
-      s::cl_float4 RetColor = ReadAcc.read(Coord, Sampler);
+      s::vec<s::opencl::cl_float, 4> RetColor = ReadAcc.read(Coord, Sampler);
       ReadDataBufAcc[0] = RetColor;
     });
     });
@@ -88,9 +96,9 @@ void checkSamplerNearest() {
   // addressing_mode::mirrored_repeat
   {
     // Out-of-range mirrored_repeat mode
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::mirrored_repeat,
                               s::filtering_mode::nearest);
@@ -100,9 +108,9 @@ void checkSamplerNearest() {
   // addressing_mode::repeat
   {
     // Out-of-range repeat mode
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::repeat, s::filtering_mode::nearest);
@@ -112,9 +120,9 @@ void checkSamplerNearest() {
   // addressing_mode::clamp_to_edge
   {
     // Out-of-range Edge Color
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(88.0f, 89.0f, 90.0f, 91.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(88.0f, 89.0f, 90.0f, 91.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::nearest);
@@ -124,8 +132,9 @@ void checkSamplerNearest() {
   // addressing_mode::clamp
   {
     // Out-of-range Border Color
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue = s::cl_float4(0.0f, 0.0f, 0.0f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(0.0f, 0.0f, 0.0f, 0.0f);
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::clamp, s::filtering_mode::nearest);
@@ -135,9 +144,9 @@ void checkSamplerNearest() {
   // addressing_mode::none
   {
     // In-range for consistent return value.
-    s::cl_float4 Coord(0.0f, 0.5f, 0.75f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(80.0f, 81.0f, 82.0f, 83.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.5f, 0.75f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(80.0f, 81.0f, 82.0f, 83.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::none, s::filtering_mode::nearest);
@@ -147,9 +156,9 @@ void checkSamplerNearest() {
   // B. coordinate_normalization_mode::unnormalized
   // addressing_mode::clamp_to_edge
   {
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::unnormalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::nearest);
@@ -158,9 +167,9 @@ void checkSamplerNearest() {
 
   // addressing_mode::clamp
   {
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::unnormalized,
                    s::addressing_mode::clamp, s::filtering_mode::nearest);
@@ -170,9 +179,9 @@ void checkSamplerNearest() {
   // addressing_mode::none
   {
     // In-range for consistent return value.
-    s::cl_float4 Coord(0.0f, 1.0f, 2.0f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.0f, 2.0f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::unnormalized,
                    s::addressing_mode::none, s::filtering_mode::nearest);
@@ -188,7 +197,7 @@ void checkSamplerNearest() {
 // value of 15000 ULP is used.
 void checkSamplerLinear() {
 
-  const s::cl_int PrecisionInULP = 15000;
+  const int PrecisionInULP = 15000;
   // create image:
   char host_ptr[100];
   for (int i = 0; i < 100; i++)
@@ -199,9 +208,9 @@ void checkSamplerLinear() {
   // addressing_mode::mirrored_repeat
   {
     // Out-of-range mirrored_repeat mode
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(44.0f, 45.0f, 46.0f, 47.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(44.0f, 45.0f, 46.0f, 47.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::mirrored_repeat,
                               s::filtering_mode::linear);
@@ -210,9 +219,9 @@ void checkSamplerLinear() {
   }
   {
     // In-range mirrored_repeat mode
-    s::cl_float4 Coord(0.0f, 0.25f, 0.55f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(42.8f, 43.8f, 44.8f, 45.8f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.25f, 0.55f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(42.8f, 43.8f, 44.8f, 45.8f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::mirrored_repeat,
                               s::filtering_mode::linear);
@@ -223,9 +232,9 @@ void checkSamplerLinear() {
   // addressing_mode::repeat
   {
     // Out-of-range repeat mode
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(46.0f, 47.0f, 48.0f, 49.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(46.0f, 47.0f, 48.0f, 49.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::repeat, s::filtering_mode::linear);
@@ -234,9 +243,9 @@ void checkSamplerLinear() {
   }
   {
     // In-range repeat mode
-    s::cl_float4 Coord(0.0f, 0.25f, 0.55f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(44.8f, 45.8f, 46.8f, 47.8f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.25f, 0.55f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(44.8f, 45.8f, 46.8f, 47.8f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::repeat, s::filtering_mode::linear);
@@ -247,9 +256,9 @@ void checkSamplerLinear() {
   // addressing_mode::clamp_to_edge
   {
     // Out-of-range Edge Color
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(88.0f, 89.0f, 90.0f, 91.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(88.0f, 89.0f, 90.0f, 91.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::linear);
@@ -257,9 +266,9 @@ void checkSamplerLinear() {
                         PrecisionInULP);
   }
   {
-    s::cl_float4 Coord(0.0f, 0.2f, 0.5f, 0.0f); // In-range
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(36.8f, 37.8f, 38.8f, 39.8f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.2f, 0.5f, 0.0f); // In-range
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(36.8f, 37.8f, 38.8f, 39.8f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::normalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::linear);
@@ -270,8 +279,9 @@ void checkSamplerLinear() {
   // addressing_mode::clamp
   {
     // Out-of-range
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue = s::cl_float4(0.0f, 0.0f, 0.0f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(0.0f, 0.0f, 0.0f, 0.0f);
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::clamp, s::filtering_mode::linear);
@@ -280,9 +290,9 @@ void checkSamplerLinear() {
   }
   {
     // In-range
-    s::cl_float4 Coord(0.0f, 0.2f, 0.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(18.4f, 18.9f, 19.4f, 19.9f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.2f, 0.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(18.4f, 18.9f, 19.4f, 19.9f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::clamp, s::filtering_mode::linear);
@@ -293,9 +303,9 @@ void checkSamplerLinear() {
   // addressing_mode::none
   {
     // In-range for consistent return value.
-    s::cl_float4 Coord(0.5f, 0.5f, 0.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(46.0f, 47.0f, 48.0f, 49.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.5f, 0.5f, 0.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(46.0f, 47.0f, 48.0f, 49.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::normalized,
                    s::addressing_mode::none, s::filtering_mode::linear);
@@ -307,9 +317,9 @@ void checkSamplerLinear() {
   // addressing_mode::clamp_to_edge
   {
     // Out-of-range
-    s::cl_float4 Coord(0.0f, 1.5f, 2.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 2.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(56.0f, 57.0f, 58.0f, 59.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::unnormalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::linear);
@@ -318,8 +328,9 @@ void checkSamplerLinear() {
   }
   {
     // In-range
-    s::cl_float4 Coord(0.0f, 0.2f, 0.5f, 0.0f);
-    s::cl_float4 ExpectedValue = s::cl_float4(0.0f, 1.0f, 2.0f, 3.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.2f, 0.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(0.0f, 1.0f, 2.0f, 3.0f) / 127.0f;
     auto Sampler = s::sampler(s::coordinate_normalization_mode::unnormalized,
                               s::addressing_mode::clamp_to_edge,
                               s::filtering_mode::linear);
@@ -330,9 +341,9 @@ void checkSamplerLinear() {
   // addressing_mode::clamp
   {
     // Out-of-range
-    s::cl_float4 Coord(0.0f, 1.5f, 1.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(16.0f, 16.5f, 17.0f, 17.5f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 1.5f, 1.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(16.0f, 16.5f, 17.0f, 17.5f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::unnormalized,
                    s::addressing_mode::clamp, s::filtering_mode::linear);
@@ -341,9 +352,9 @@ void checkSamplerLinear() {
   }
   {
     // In-range
-    s::cl_float4 Coord(0.0f, 0.2f, 0.5f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(0.0f, 0.35f, 0.7f, 1.05f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(0.0f, 0.2f, 0.5f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(0.0f, 0.35f, 0.7f, 1.05f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::unnormalized,
                    s::addressing_mode::clamp, s::filtering_mode::linear);
@@ -354,9 +365,9 @@ void checkSamplerLinear() {
   // addressing_mode::none
   {
     // In-range for consistent return value.
-    s::cl_float4 Coord(1.0f, 2.0f, 3.0f, 0.0f);
-    s::cl_float4 ExpectedValue =
-        s::cl_float4(74.0f, 75.0f, 76.0f, 77.0f) / 127.0f;
+    s::vec<s::opencl::cl_float, 4> Coord(1.0f, 2.0f, 3.0f, 0.0f);
+    s::vec<s::opencl::cl_float, 4> ExpectedValue =
+        s::vec<s::opencl::cl_float, 4>(74.0f, 75.0f, 76.0f, 77.0f) / 127.0f;
     auto Sampler =
         s::sampler(s::coordinate_normalization_mode::unnormalized,
                    s::addressing_mode::none, s::filtering_mode::linear);

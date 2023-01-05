@@ -97,7 +97,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class maxUI2UI1>([=]() {
-          AccR[0] = s::max(s::uint2{5, 3}, unsigned int{2});
+          AccR[0] = s::max(s::uint2{5, 3}, 2u);
         });
       });
     }
@@ -193,7 +193,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class minUI2UI1>([=]() {
-          AccR[0] = s::min(s::uint2{5, 3}, unsigned int{2});
+          AccR[0] = s::min(s::uint2{5, 3}, 2u);
         });
       });
     }
@@ -237,8 +237,8 @@ int main() {
         });
       });
     }
-    s::ulonglong r1 = r.x();
-    s::ulonglong r2 = r.y();
+    unsigned long long r1 = r.x();
+    unsigned long long r2 = r.y();
     assert(r1 == 5);
     assert(r2 == 2);
   }
@@ -520,7 +520,7 @@ int main() {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class upsampleUC2UC2>([=]() {
           AccR[0] =
-              s::upsample(s::cl_uchar2{0x10, 0x10}, s::cl_uchar2{0x10, 0x10});
+              s::upsample(s::uchar2{0x10, 0x10}, s::uchar2{0x10, 0x10});
         });
       });
     }
@@ -540,12 +540,12 @@ int main() {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class upsampleSC2UC2>([=]() {
           AccR[0] =
-              s::upsample(s::cl_char2{0x10, 0x10}, s::cl_uchar2{0x10, 0x10});
+              s::upsample(s::char2{0x10, 0x10}, s::uchar2{0x10, 0x10});
         });
       });
     }
-    s::cl_short r1 = r.x();
-    s::cl_short r2 = r.y();
+    short r1 = r.x();
+    short r2 = r.y();
     assert(r1 == 0x1010);
     assert(r2 == 0x1010);
   }
