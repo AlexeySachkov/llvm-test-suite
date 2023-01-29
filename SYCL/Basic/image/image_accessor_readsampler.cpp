@@ -1,4 +1,4 @@
-// UNSUPPORTED: cuda || hip || (windows && level_zero)
+// UNSUPPORTED: cuda || hip || (windows && level_zero) || gpu-intel-pvc
 // unsupported on windows (level-zero) due to fail of Jenkins/pre-ci-windows
 // CUDA cannot support SYCL 1.2.1 images.
 //
@@ -75,10 +75,10 @@ void checkReadSampler(char *host_ptr, s::sampler Sampler,
       s::accessor<s::vec<s::opencl::cl_float, 4>, 1, s::access::mode::write>
           ReadDataBufAcc(ReadDataBuf, cgh);
 
-    cgh.single_task<class kernel_class<i>>([=](){
-      s::vec<s::opencl::cl_float, 4> RetColor = ReadAcc.read(Coord, Sampler);
-      ReadDataBufAcc[0] = RetColor;
-    });
+      cgh.single_task<class kernel_class<i>>([=]() {
+        s::vec<s::opencl::cl_float, 4> RetColor = ReadAcc.read(Coord, Sampler);
+        ReadDataBufAcc[0] = RetColor;
+      });
     });
   }
   validateReadData(ReadData, ExpectedColor, precision);
