@@ -20,8 +20,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class acosF1>(
-            [=]() { AccR[0] = s::acos(float{0.5}); });
+        cgh.single_task<class acosF1>([=]() { AccR[0] = s::acos(float{0.5}); });
       });
     }
     assert(r > 1.047f && r < 1.048f); // ~1.0471975511965979
@@ -50,8 +49,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class asinF1>(
-            [=]() { AccR[0] = s::asin(float{0.5}); });
+        cgh.single_task<class asinF1>([=]() { AccR[0] = s::asin(float{0.5}); });
       });
     }
     assert(r > 0.523f && r < 0.524f); // ~0.5235987755982989
@@ -80,8 +78,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class atanF1>(
-            [=]() { AccR[0] = s::atan(float{0.5}); });
+        cgh.single_task<class atanF1>([=]() { AccR[0] = s::atan(float{0.5}); });
       });
     }
     assert(r > 0.463f && r < 0.464f); // ~0.4636476090008061
@@ -125,8 +122,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class ceilF1>(
-            [=]() { AccR[0] = s::ceil(float{0.5}); });
+        cgh.single_task<class ceilF1>([=]() { AccR[0] = s::ceil(float{0.5}); });
       });
     }
     assert(r == 1.f);
@@ -140,8 +136,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class cosF1>(
-            [=]() { AccR[0] = s::cos(float{0.5}); });
+        cgh.single_task<class cosF1>([=]() { AccR[0] = s::cos(float{0.5}); });
       });
     }
     assert(r > 0.877f && r < 0.878f); // ~0.8775825618903728
@@ -155,8 +150,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class coshF1>(
-            [=]() { AccR[0] = s::cosh(float{0.5}); });
+        cgh.single_task<class coshF1>([=]() { AccR[0] = s::cosh(float{0.5}); });
       });
     }
     assert(r > 1.127f && r < 1.128f); // ~1.1276259652063807
@@ -185,8 +179,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class erfcF1>(
-            [=]() { AccR[0] = s::erfc(float{0.5}); });
+        cgh.single_task<class erfcF1>([=]() { AccR[0] = s::erfc(float{0.5}); });
       });
     }
     assert(r > 0.479f && r < 0.480f); // ~0.4795001221869535
@@ -200,8 +193,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class erfF1>(
-            [=]() { AccR[0] = s::erf(float{0.5}); });
+        cgh.single_task<class erfF1>([=]() { AccR[0] = s::erf(float{0.5}); });
       });
     }
     assert(r > 0.520f && r < 0.521f); // ~0.5204998778130465
@@ -215,8 +207,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class expF1>(
-            [=]() { AccR[0] = s::exp(float{0.5}); });
+        cgh.single_task<class expF1>([=]() { AccR[0] = s::exp(float{0.5}); });
       });
     }
     assert(r > 1.648f && r < 1.649f); // ~1.6487212707001282
@@ -230,8 +221,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class exp2F1>(
-            [=]() { AccR[0] = s::exp2(float{8.0}); });
+        cgh.single_task<class exp2F1>([=]() { AccR[0] = s::exp2(float{8.0}); });
       });
     }
     assert(r == 256.0f);
@@ -245,8 +235,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class exp10F1>(
-            [=]() { AccR[0] = s::exp10(float{2}); });
+        cgh.single_task<class exp10F1>([=]() { AccR[0] = s::exp10(float{2}); });
       });
     }
     assert(r == 100.0f);
