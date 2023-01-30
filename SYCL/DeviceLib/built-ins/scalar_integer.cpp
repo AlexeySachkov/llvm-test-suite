@@ -370,7 +370,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class rotateSI1SI2>([=]() {
-          AccR[0] = s::rotate((unsigned char)0xe0, (unsigned char)50);
+          AccR[0] = s::rotate((char)0xe0, (char)50);
         });
       });
     }
