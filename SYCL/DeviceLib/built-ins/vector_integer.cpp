@@ -519,8 +519,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class upsampleUC2UC2>([=]() {
-          AccR[0] =
-              s::upsample(s::uchar2{0x10, 0x10}, s::uchar2{0x10, 0x10});
+          AccR[0] = s::upsample(s::uchar2{0x10, 0x10}, s::uchar2{0x10, 0x10});
         });
       });
     }
@@ -539,8 +538,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class upsampleSC2UC2>([=]() {
-          AccR[0] =
-              s::upsample(s::char2{0x10, 0x10}, s::uchar2{0x10, 0x10});
+          AccR[0] = s::upsample(s::char2{0x10, 0x10}, s::uchar2{0x10, 0x10});
         });
       });
     }

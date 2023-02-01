@@ -122,10 +122,10 @@ int main(void) {
   int err_cnt = 0;
 
   for (unsigned i = 0; i < Size; ++i) {
-    if (A[i] != C[i]) {
+    if (A[i] + B[i] != C[i]) {
       if (++err_cnt < 10) {
         std::cout << "failed at index " << i << ", " << C[i] << " != " << A[i]
-                  << "\n";
+                  << " + " << B[i] << "\n";
       }
     }
   }

@@ -81,9 +81,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class atan2piF1F1>([=]() {
-          AccR[0] = s::atan2pi(float{0.5}, float{0.5});
-        });
+        cgh.single_task<class atan2piF1F1>(
+            [=]() { AccR[0] = s::atan2pi(float{0.5}, float{0.5}); });
       });
     }
     assert(r > 0.249f && r < 0.251f); // ~0.25
@@ -97,9 +96,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class copysignF1F1>([=]() {
-          AccR[0] = s::copysign(float{1}, float{-0.5});
-        });
+        cgh.single_task<class copysignF1F1>(
+            [=]() { AccR[0] = s::copysign(float{1}, float{-0.5}); });
       });
     }
     assert(r == -1.f);
@@ -128,10 +126,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class fmaF1F1F1>([=]() {
-          AccR[0] =
-              s::fma(float{0.5}, float{10.0}, float{3.0});
-        });
+        cgh.single_task<class fmaF1F1F1>(
+            [=]() { AccR[0] = s::fma(float{0.5}, float{10.0}, float{3.0}); });
       });
     }
     assert(r == 8.0f);
@@ -144,7 +140,7 @@ int main() {
     {
       s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::buffer<float, 1> BufI(&i, s::range<1>(1),
-                                     {s::property::buffer::use_host_ptr()});
+                               {s::property::buffer::use_host_ptr()});
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::read_write>(cgh);
@@ -166,7 +162,7 @@ int main() {
     {
       s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::buffer<float, 1> BufI(&i, s::range<1>(1),
-                                     {s::property::buffer::use_host_ptr()});
+                               {s::property::buffer::use_host_ptr()});
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::read_write>(cgh);
@@ -190,7 +186,7 @@ int main() {
     {
       s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::buffer<int, 1> BufI(&i, s::range<1>(1),
-                                   {s::property::buffer::use_host_ptr()});
+                             {s::property::buffer::use_host_ptr()});
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::read_write>(cgh);
@@ -214,7 +210,7 @@ int main() {
     {
       s::buffer<float, 1> BufR(&r, s::range<1>(1));
       s::buffer<int, 1> BufI(&i, s::range<1>(1),
-                                   {s::property::buffer::use_host_ptr()});
+                             {s::property::buffer::use_host_ptr()});
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::read_write>(cgh);

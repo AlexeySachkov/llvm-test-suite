@@ -19,8 +19,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class maxSI1SI1>(
-            [=]() { AccR[0] = s::max(5, 2); });
+        cgh.single_task<class maxSI1SI1>([=]() { AccR[0] = s::max(5, 2); });
       });
     }
     assert(r == 5);
@@ -34,8 +33,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class maxUI1UI1>(
-            [=]() { AccR[0] = s::max(5u, 2u); });
+        cgh.single_task<class maxUI1UI1>([=]() { AccR[0] = s::max(5u, 2u); });
       });
     }
     assert(r == 5);
@@ -49,8 +47,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class minSI1SI1>(
-            [=]() { AccR[0] = s::min(5, 2); });
+        cgh.single_task<class minSI1SI1>([=]() { AccR[0] = s::min(5, 2); });
       });
     }
     assert(r == 2);
@@ -79,8 +76,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class minUI1UI1>(
-            [=]() { AccR[0] = s::min(5u, 2u); });
+        cgh.single_task<class minUI1UI1>([=]() { AccR[0] = s::min(5u, 2u); });
       });
     }
     assert(r == 2);
@@ -109,8 +105,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class absSI1>(
-            [=]() { AccR[0] = s::abs(-5); });
+        cgh.single_task<class absSI1>([=]() { AccR[0] = s::abs(-5); });
       });
     }
     assert(r == 5);
@@ -139,8 +134,9 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class abs_diffUC1UC1>(
-            [=]() { AccR[0] = s::abs_diff((unsigned char)3, (unsigned char)250); });
+        cgh.single_task<class abs_diffUC1UC1>([=]() {
+          AccR[0] = s::abs_diff((unsigned char)3, (unsigned char)250);
+        });
       });
     }
     assert(r == 247);
@@ -154,9 +150,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class add_satSI1SI1>([=]() {
-          AccR[0] = s::add_sat(0x7FFFFFFF, 100);
-        });
+        cgh.single_task<class add_satSI1SI1>(
+            [=]() { AccR[0] = s::add_sat(0x7FFFFFFF, 100); });
       });
     }
     assert(r == 0x7FFFFFFF);
@@ -170,9 +165,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class haddSI1SI1>([=]() {
-          AccR[0] = s::hadd(0x0000007F, 0x00000020);
-        });
+        cgh.single_task<class haddSI1SI1>(
+            [=]() { AccR[0] = s::hadd(0x0000007F, 0x00000020); });
       });
     }
     assert(r == 0x0000004F);
@@ -186,9 +180,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class rhaddSI1SI1>([=]() {
-          AccR[0] = s::rhadd(0x0000007F, 0x00000020);
-        });
+        cgh.single_task<class rhaddSI1SI1>(
+            [=]() { AccR[0] = s::rhadd(0x0000007F, 0x00000020); });
       });
     }
     assert(r == 0x50);
@@ -202,9 +195,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class clampSI1SI1SI1>([=]() {
-          AccR[0] = s::clamp(5, 10, 30);
-        });
+        cgh.single_task<class clampSI1SI1SI1>(
+            [=]() { AccR[0] = s::clamp(5, 10, 30); });
       });
     }
     assert(r == 10);
@@ -218,8 +210,7 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class clzSI1>(
-            [=]() { AccR[0] = s::clz(0x0FFFFFFF); });
+        cgh.single_task<class clzSI1>([=]() { AccR[0] = s::clz(0x0FFFFFFF); });
       });
     }
     assert(r == 4);
@@ -249,8 +240,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class mad_hiSI1SI1SI1>([=]() {
-          AccR[0] = s::mad_hi(0x10000000, 0x00000100,
-                              0x00000001);
+          AccR[0] = s::mad_hi(0x10000000, 0x00000100, 0x00000001);
         }); // 2^28 * 2^8 = 2^36 -> 0x10 00000000.
       });
     }
@@ -266,8 +256,7 @@ int main() {
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
         cgh.single_task<class mad_satSI1SI1SI1>([=]() {
-          AccR[0] = s::mad_sat(0x10000000, 0x00000100,
-                               0x00000001);
+          AccR[0] = s::mad_sat(0x10000000, 0x00000100, 0x00000001);
         }); // 2^31 * 2^8 = 2^39 -> 0x80 00000000 -> reuslt is saturated in the
             // product.
       });
@@ -353,9 +342,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class rotateSI1SI1>([=]() {
-          AccR[0] = s::rotate(0x11100000, 12);
-        });
+        cgh.single_task<class rotateSI1SI1>(
+            [=]() { AccR[0] = s::rotate(0x11100000, 12); });
       });
     }
     assert(r == 0x00000111);
@@ -369,9 +357,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class rotateSI1SI2>([=]() {
-          AccR[0] = s::rotate((unsigned char)0xe0, (unsigned char)50);
-        });
+        cgh.single_task<class rotateSI1SI2>(
+            [=]() { AccR[0] = s::rotate((char)0xe0, (char)50); });
       });
     }
     assert((unsigned char)r == 0x83);
@@ -426,9 +413,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class upsampleSC1UC1>([=]() {
-          AccR[0] = s::upsample((char)0x10, (unsigned char)0x10);
-        });
+        cgh.single_task<class upsampleSC1UC1>(
+            [=]() { AccR[0] = s::upsample((char)0x10, (unsigned char)0x10); });
       });
     }
     assert(r == 0x1010);
@@ -474,9 +460,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class upsampleUI1UI1>([=]() {
-          AccR[0] = s::upsample(0x00000010u, 0x00000010u);
-        });
+        cgh.single_task<class upsampleUI1UI1>(
+            [=]() { AccR[0] = s::upsample(0x00000010u, 0x00000010u); });
       });
     }
     assert(r == 0x0000001000000010);
@@ -490,9 +475,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class upsampleSI1UI1>([=]() {
-          AccR[0] = s::upsample(0x00000010, 0x00000010u);
-        });
+        cgh.single_task<class upsampleSI1UI1>(
+            [=]() { AccR[0] = s::upsample(0x00000010, 0x00000010u); });
       });
     }
     assert(r == 0x0000001000000010);
@@ -521,10 +505,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class mad24SI1SI1SI1>([=]() {
-          AccR[0] =
-              s::mad24((int)0xFFFFFFFF, (int)20, (int)20);
-        });
+        cgh.single_task<class mad24SI1SI1SI1>(
+            [=]() { AccR[0] = s::mad24((int)0xFFFFFFFF, (int)20, (int)20); });
       });
     }
     assert(r == 0);
@@ -538,9 +520,8 @@ int main() {
       s::queue myQueue;
       myQueue.submit([&](s::handler &cgh) {
         auto AccR = BufR.get_access<s::access::mode::write>(cgh);
-        cgh.single_task<class mul24SI1SI1>([=]() {
-          AccR[0] = s::mul24((int)0xFFFFFFFF, (int)20);
-        });
+        cgh.single_task<class mul24SI1SI1>(
+            [=]() { AccR[0] = s::mul24((int)0xFFFFFFFF, (int)20); });
       });
     }
     assert(r == -20);
