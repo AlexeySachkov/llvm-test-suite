@@ -3,7 +3,7 @@
 // RUN: %GPU_RUN_PLACEHOLDER %t.out
 // RUN: %ACC_RUN_PLACEHOLDER %t.out
 //
-// This test is indented to check that no speculative compilation is happenning,
+// This test intends to check that no speculative compilation is happening,
 // i.e. there are no exceptions thrown about aspects fp16 or fp64 being
 // unsuppored on device.
 
