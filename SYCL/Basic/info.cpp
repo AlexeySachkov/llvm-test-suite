@@ -226,6 +226,8 @@ int main() {
       dev, "Max work item sizes 3D");
   print_info<info::device::max_work_group_size, size_t>(dev,
                                                         "Max work group size");
+  print_info<info::device::max_num_sub_groups, std::uint32_t>(
+      dev, "Max number of sub-groups");
   print_info<info::device::preferred_vector_width_char, std::uint32_t>(
       dev, "Preferred vector width char");
   print_info<info::device::preferred_vector_width_short, std::uint32_t>(
